@@ -44,4 +44,5 @@ public class UsuarioManager {
         usuarioRepository.delete(user);
     }
 
+
 }
