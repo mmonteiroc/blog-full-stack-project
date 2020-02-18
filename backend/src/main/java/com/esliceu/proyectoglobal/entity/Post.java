@@ -1,5 +1,7 @@
 package com.esliceu.proyectoglobal.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.time.LocalDate;
 
@@ -37,6 +39,7 @@ public class Post {
     @Column(name = "fecha_creacion", nullable = false, columnDefinition = "DATE")
     private LocalDate creacion;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(
             foreignKey = @ForeignKey(
