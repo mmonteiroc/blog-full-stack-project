@@ -5,7 +5,7 @@
       <q-toolbar>
         <q-toolbar-title>
           <q-avatar square>
-            <img src="https://i.ya-webdesign.com/images/carrots-png-emoji-3.png">
+            <img src="~assets/zanahoria.png">
           </q-avatar>
           Es liceu - Restaurant
         </q-toolbar-title>
