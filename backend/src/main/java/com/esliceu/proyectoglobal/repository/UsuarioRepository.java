@@ -11,4 +11,5 @@ import org.springframework.data.repository.CrudRepository;
  * Project: BackEnd
  */
 public interface UsuarioRepository extends CrudRepository<Usuario, Long> {
+    Usuario findByIdusuario(Long id);
 }

@@ -11,5 +11,5 @@ import org.springframework.data.repository.CrudRepository;
  * Project: BackEnd
  */
 public interface PostRepository extends CrudRepository<Post, Long> {
-
+    Post findByIdpost(Long id);
 }

@@ -32,8 +32,8 @@ public class UsuarioManager {
         return toReturn;
     }
 
-    public Optional<Usuario> findById(Long id) {
-        return usuarioRepository.findById(id);
+    public Usuario findById(Long id) {
+        return usuarioRepository.findByIdusuario(id);
     }
 
     public void saveOrUpdate(Usuario user) {
