@@ -1,1 +1,18 @@
-cors.allowed = # URL ACCEPTED, EX: http://localhost:8888
+## Spring DATASOURCE (DataSourceAutoConfiguration & DataSourceProperties)  Donde sale la palabra EJEMPLO, modificar
+spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
+spring.datasource.url = jdbc:mysql://localhost:3306/EJEMPLO?useSSL=false&createDatabaseIfNotExist=true
+spring.datasource.username = EJEMPLO
+spring.datasource.password = EJEMPLO
+
+## Hibernate Properties
+# The SQL dialect makes Hibernate generate better SQL for the chosen database
+spring.jpa.properties.hibernate.dialect = org.hibernate.dialect.MySQL5InnoDBDialect
+spring.jpa.show-sql=false
+spring.jpa.properties.hibernate.format_sql=true
+
+# Hibernate ddl auto (create, create-drop, validate, update, none)
+spring.jpa.hibernate.ddl-auto = update
+
+
+
+ors.allowed = # URL ACCEPTED, EX: http://localhost:8888

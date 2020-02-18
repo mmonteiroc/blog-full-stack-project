@@ -1,5 +1,6 @@
 package com.esliceu.proyectoglobal.entity;
 
+import javax.persistence.*;
 import java.util.List;
 
 /**
@@ -9,32 +10,38 @@ import java.util.List;
  * Package: com.esliceu.proyectoglobal.entity
  * Project: BackEnd
  */
+@Entity
+@Table(name = "usuario")
 public class Usuario {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "idusuario")
     private Long idusuario;
 
-
+    @Column(name = "username", length = 45, nullable = false)
     private String username;
 
-
+    @Column(name = "email", length = 100, nullable = false, unique = true)
     private String email;
 
-
+    @Column(name = "password", length = 300, nullable = false)
     private String password;
 
-
+    @Column(name = "nombre", length = 45, nullable = false)
     private String nombre;
 
-
+    @Column(name = "apellidos", length = 80)
     private String apellidos;
 
 
     /*
      * Local - Google - Facebook ......
      * */
+    @Column(name = "authMode", length = 20, nullable = false)
     private String authMode;
 
-
+    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL)
     private List<Post> posts;
 
 

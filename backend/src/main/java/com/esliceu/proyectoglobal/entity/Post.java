@@ -1,5 +1,6 @@
 package com.esliceu.proyectoglobal.entity;
 
+import javax.persistence.*;
 import java.time.LocalDate;
 
 /**
@@ -9,26 +10,40 @@ import java.time.LocalDate;
  * Package: com.esliceu.proyectoglobal.entity
  * Project: BackEnd
  */
+@Entity
+@Table(name = "post")
 public class Post {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "idpost")
     private Long idpost;
 
+    @Column(name = "titulo_original", length = 100, nullable = false)
+    private String tituloOriginal;
 
-    private String titulo;
+    @Column(name = "titulo_traducido", length = 100, nullable = false)
+    private String tituloTraducido;
 
+    @Column(name = "contenido_original", columnDefinition = "TEXT", nullable = false)
+    private String contenidoOriginal;
 
-    private String contenido_original;
+    @Column(name = "contenido_traducido", columnDefinition = "TEXT", nullable = false)
+    private String contenidoTraducido;
 
+    @Column(name = "idioma_traducido", length = 10, nullable = false)
+    private String idiomaTraducido;
 
-    private String contenido_traducido;
-
-
-    private String idioma_traducido;
-
-
+    @Column(name = "fecha_creacion", nullable = false, columnDefinition = "DATE")
     private LocalDate creacion;
 
-
+    @ManyToOne
+    @JoinColumn(
+            foreignKey = @ForeignKey(
+                    name = "usuari_idusuari"),
+            name = "usuari_idusuari",
+            nullable = false
+    )
     private Usuario usuario;
 
 
@@ -43,36 +58,44 @@ public class Post {
         this.idpost = idpost;
     }
 
-    public String getTitulo() {
-        return titulo;
+    public String getTituloOriginal() {
+        return tituloOriginal;
     }
 
-    public void setTitulo(String titulo) {
-        this.titulo = titulo;
+    public void setTituloOriginal(String tituloOriginal) {
+        this.tituloOriginal = tituloOriginal;
     }
 
-    public String getContenido_original() {
-        return contenido_original;
+    public String getTituloTraducido() {
+        return tituloTraducido;
     }
 
-    public void setContenido_original(String contenido_original) {
-        this.contenido_original = contenido_original;
+    public void setTituloTraducido(String tituloTraducido) {
+        this.tituloTraducido = tituloTraducido;
     }
 
-    public String getContenido_traducido() {
-        return contenido_traducido;
+    public String getContenidoOriginal() {
+        return contenidoOriginal;
     }
 
-    public void setContenido_traducido(String contenido_traducido) {
-        this.contenido_traducido = contenido_traducido;
+    public void setContenidoOriginal(String contenidoOriginal) {
+        this.contenidoOriginal = contenidoOriginal;
     }
 
-    public String getIdioma_traducido() {
-        return idioma_traducido;
+    public String getContenidoTraducido() {
+        return contenidoTraducido;
     }
 
-    public void setIdioma_traducido(String idioma_traducido) {
-        this.idioma_traducido = idioma_traducido;
+    public void setContenidoTraducido(String contenidoTraducido) {
+        this.contenidoTraducido = contenidoTraducido;
+    }
+
+    public String getIdiomaTraducido() {
+        return idiomaTraducido;
+    }
+
+    public void setIdiomaTraducido(String idiomaTraducido) {
+        this.idiomaTraducido = idiomaTraducido;
     }
 
     public LocalDate getCreacion() {
