@@ -64,12 +64,17 @@ public class PostController {
         /*
          * TODO comprobar que recibimos un ID si o si,
          *  sino no se modifica y habra que mandar errores BAD_REQUEST
-         *
          * */
+
+
+        /*
+         * TODO El usuario de el token que permite entrar en este metodo,
+         *  tambien ha de ser el mismo que es el propietario del post que quiere modificar
+         * */
+
         postManager.update(post);
 
         return new ResponseEntity<>(HttpStatus.OK);
-
     }
 
 

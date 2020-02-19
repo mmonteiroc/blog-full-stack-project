@@ -84,6 +84,13 @@ public class PostManager {
         return post;
     }
 
+
+    /*
+     * Esto solo es un parser, por eso, por mucho que no recibamos un ID
+     * o algun parametro, o el ID que recibimos, no encontramos post en la
+     * BBDD nunca petara, por eso mismo enctroamos por algunas partes
+     * encontramos "post = new Post()", para que no pete nuestro parser
+     * */
     public Post fromJsonUpdate(String json) {
         Post post;
 
@@ -91,6 +98,15 @@ public class PostManager {
 
         if (jsonObject.get("idpost") != null) {
             post = findById(jsonObject.get("idpost").getAsLong());
+
+
+            if (post == null) {
+                // CREAMOS UN NUEVO POST YA QUE EL ID NO EXISTE Y NUESTRA DDBB NO LO ENCUENTRA
+
+                post = new Post();
+                post.setCreacion(LocalDate.now());
+                post.setUsuario(usuarioManager.findById((long) 1));
+            }
         } else {
             post = new Post();
             post.setCreacion(LocalDate.now());
