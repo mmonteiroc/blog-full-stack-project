@@ -4,6 +4,7 @@ node_modules
 *.iws
 *.iml
 *.ipr
+*.xml
 ### VS Code ###
 .vscode/
 package-lock.json
