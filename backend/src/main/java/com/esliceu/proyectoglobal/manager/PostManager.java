@@ -2,7 +2,6 @@ package com.esliceu.proyectoglobal.manager;
 
 import com.esliceu.proyectoglobal.entity.Post;
 import com.esliceu.proyectoglobal.repository.PostRepository;
-import javafx.geometry.Pos;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
