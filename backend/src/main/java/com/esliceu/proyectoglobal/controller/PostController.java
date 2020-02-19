@@ -46,7 +46,16 @@ public class PostController {
 
         Post post = postManager.fromJsonCreate(json);
 
-        // TODO Comprobar que todos los campos obligatorios los recibimos
+        // Se comprueban que los campos obligatorios no estén vacios.
+        if (post.getTituloOriginal() == null || post.getTituloTraducido() == null ||
+                post.getContenidoOriginal() == null || post.getContenidoTraducido() == null ||
+                post.getCreacion() == null || post.getIdiomaTraducido() == null) {
+            return new ResponseEntity<>("Error en los campos del post.", HttpStatus.BAD_REQUEST);
+        }
+
+        /*
+         * TODO Añadir al post el usuario que lo ha creado.
+         * */
 
         postManager.create(post);
 
@@ -61,11 +70,10 @@ public class PostController {
 
         Post post = postManager.fromJsonUpdate(json);
 
-        /*
-         * TODO comprobar que recibimos un ID si o si,
-         *  sino no se modifica y habra que mandar errores BAD_REQUEST
-         * */
-
+        // Se comprueba que exista un id ya que si no existe no se puede modificar.
+        if (post.getIdpost() == null) {
+            return new ResponseEntity<>("No se ha recibido ID o se ha recibido un ID inexistente.", HttpStatus.BAD_REQUEST);
+        }
 
         /*
          * TODO El usuario de el token que permite entrar en este metodo,
