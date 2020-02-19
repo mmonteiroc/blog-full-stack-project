@@ -1,6 +1,7 @@
 package com.esliceu.proyectoglobal.controller;
 
 import com.esliceu.proyectoglobal.entity.Post;
+import com.esliceu.proyectoglobal.entity.Usuario;
 import com.esliceu.proyectoglobal.manager.PostManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
