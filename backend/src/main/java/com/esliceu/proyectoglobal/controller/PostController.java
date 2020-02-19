@@ -69,6 +69,7 @@ public class PostController {
         postManager.update(post);
 
         return new ResponseEntity<>(HttpStatus.OK);
+
     }
 
 
