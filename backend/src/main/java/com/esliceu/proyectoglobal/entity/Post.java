@@ -1,6 +1,6 @@
 package com.esliceu.proyectoglobal.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.*;
 
 import javax.persistence.*;
 import java.time.LocalDate;

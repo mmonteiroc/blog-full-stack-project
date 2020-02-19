@@ -2,9 +2,13 @@ package com.esliceu.proyectoglobal.manager;
 
 import com.esliceu.proyectoglobal.entity.Post;
 import com.esliceu.proyectoglobal.repository.PostRepository;
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import javafx.geometry.Pos;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -19,7 +23,13 @@ import java.util.List;
 public class PostManager {
 
     @Autowired
-    PostRepository postRepository;
+    private PostRepository postRepository;
+
+    @Autowired
+    private Gson gson;
+
+    @Autowired
+    private UsuarioManager usuarioManager;
 
     public List<Post> findAll() {
         List<Post> toReturn = new LinkedList<>();
@@ -48,4 +58,61 @@ public class PostManager {
     }
 
 
+    public Post fromJsonCreate(String json) {
+        Post post = new Post();
+
+        JsonObject jsonObject = gson.fromJson(json, JsonObject.class);
+
+        if (jsonObject.get("tituloOriginal") != null) {
+            post.setTituloOriginal(jsonObject.get("tituloOriginal").getAsString());
+        }
+        if (jsonObject.get("tituloTraducido") != null) {
+            post.setTituloTraducido(jsonObject.get("tituloOriginal").getAsString());
+        }
+        if (jsonObject.get("contenidoOriginal") != null) {
+            post.setContenidoOriginal(jsonObject.get("contenidoOriginal").getAsString());
+        }
+        if (jsonObject.get("contenidoTraducido") != null) {
+            post.setContenidoTraducido(jsonObject.get("contenidoTraducido").getAsString());
+        }
+        if (jsonObject.get("idiomaTraducido") != null) {
+            post.setIdiomaTraducido(jsonObject.get("idiomaTraducido").getAsString());
+        }
+
+        post.setCreacion(LocalDate.now());
+        post.setUsuario(usuarioManager.findById((long) 1));
+        return post;
+    }
+
+    public Post fromJsonUpdate(String json) {
+        Post post;
+
+        JsonObject jsonObject = gson.fromJson(json, JsonObject.class);
+
+        if (jsonObject.get("idpost") != null) {
+            post = findById(jsonObject.get("idpost").getAsLong());
+        } else {
+            post = new Post();
+            post.setCreacion(LocalDate.now());
+            post.setUsuario(usuarioManager.findById((long) 1));
+        }
+
+        if (jsonObject.get("tituloOriginal") != null) {
+            post.setTituloOriginal(jsonObject.get("tituloOriginal").getAsString());
+        }
+        if (jsonObject.get("tituloTraducido") != null) {
+            post.setTituloTraducido(jsonObject.get("tituloOriginal").getAsString());
+        }
+        if (jsonObject.get("contenidoOriginal") != null) {
+            post.setContenidoOriginal(jsonObject.get("contenidoOriginal").getAsString());
+        }
+        if (jsonObject.get("contenidoTraducido") != null) {
+            post.setContenidoTraducido(jsonObject.get("contenidoTraducido").getAsString());
+        }
+        if (jsonObject.get("idiomaTraducido") != null) {
+            post.setIdiomaTraducido(jsonObject.get("idiomaTraducido").getAsString());
+        }
+
+        return post;
+    }
 }

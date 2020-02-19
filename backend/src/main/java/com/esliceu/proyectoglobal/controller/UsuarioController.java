@@ -1,5 +1,6 @@
 package com.esliceu.proyectoglobal.controller;
 
+import com.esliceu.proyectoglobal.entity.Post;
 import com.esliceu.proyectoglobal.entity.Usuario;
 import com.esliceu.proyectoglobal.manager.UsuarioManager;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -20,7 +22,7 @@ import java.util.List;
 @RestController
 public class UsuarioController {
     @Autowired
-    UsuarioManager usuarioManager;
+    private UsuarioManager usuarioManager;
 
     @GetMapping("/user")
     @Transactional
