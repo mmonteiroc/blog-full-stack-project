@@ -4,6 +4,7 @@ import com.esliceu.proyectoglobal.entity.Usuario;
 import com.esliceu.proyectoglobal.manager.UsuarioManager;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,6 +22,7 @@ public class UsuarioController {
     UsuarioManager usuarioManager;
 
     @GetMapping("/user")
+    @Transactional
     public List<Usuario> getAll() {
 
         List<Usuario> users = usuarioManager.findAll();
@@ -34,6 +36,7 @@ public class UsuarioController {
     }
 
     @GetMapping("/user/{id}")
+    @Transactional
     public Usuario get(@PathVariable("id") Long id) {
         Usuario user = usuarioManager.findById(id);
         user.setPassword("");
