@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**
@@ -39,6 +40,35 @@ public class PostController {
     }
 
     /*
+     * Delete de un post
+     * */
+    @DeleteMapping("/post/{id}")
+    public ResponseEntity<String> delete(@PathVariable("id") Long id, HttpServletRequest request) {
+
+        Post post = postManager.findById(id);
+        if (post == null) {
+            return new ResponseEntity<>("Post con id: " + id + " no existe, o ID erroneo", HttpStatus.BAD_REQUEST);
+        }
+
+        /*
+         * TODO Mirar que el usuario es el propietario de dicho post
+         * */
+        //String token = request.getHeader("Authorization");
+        //token = token.replace("Bearer ", "");
+        /*
+         * TODO tenemos que crear tokenManager y pedir los claims para recibir el usuario
+         * */
+        if (false) { // PLACEHOLDER
+
+            return new ResponseEntity<>("No eres el propietario de dicho post", HttpStatus.FORBIDDEN);
+        }
+
+        postManager.delete(post);
+        return new ResponseEntity<>("Se ha borrado correctamente", HttpStatus.OK);
+    }
+
+
+    /*
      * Create post
      * */
     @PostMapping("/post")
@@ -54,8 +84,15 @@ public class PostController {
         }
 
         /*
+         * TODO Mirar como recuperar el usuario del TOKEN que se ha validado
+         *
          * TODO Añadir al post el usuario que lo ha creado.
          * */
+        if (false) { // PLACEHOLDER
+
+            return new ResponseEntity<>("No eres el propietario de dicho post", HttpStatus.FORBIDDEN);
+        }
+
 
         postManager.create(post);
 
@@ -79,11 +116,14 @@ public class PostController {
          * TODO El usuario de el token que permite entrar en este metodo,
          *  tambien ha de ser el mismo que es el propietario del post que quiere modificar
          * */
+        if (false) { // PLACEHOLDER
+
+            return new ResponseEntity<>("No eres el propietario de dicho post", HttpStatus.FORBIDDEN);
+        }
 
         postManager.update(post);
 
         return new ResponseEntity<>(HttpStatus.OK);
     }
-
 
 }
