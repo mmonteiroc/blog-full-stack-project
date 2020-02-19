@@ -3,6 +3,9 @@ package com.esliceu.proyectoglobal.controller;
 import com.esliceu.proyectoglobal.entity.Post;
 import com.esliceu.proyectoglobal.entity.Usuario;
 import com.esliceu.proyectoglobal.manager.PostManager;
+import com.esliceu.proyectoglobal.manager.TokenManager;
+import com.esliceu.proyectoglobal.manager.UsuarioManager;
+import io.jsonwebtoken.Claims;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,6 +26,12 @@ public class PostController {
 
     @Autowired
     private PostManager postManager;
+
+    @Autowired
+    private TokenManager tokenManager;
+
+    @Autowired
+    private UsuarioManager usuarioManager;
 
     /*
      * Get all de todos los posts
@@ -52,14 +61,14 @@ public class PostController {
         }
 
         /*
-         * TODO Mirar que el usuario es el propietario de dicho post
+         * Comprobamos que el usuario es el propietario del post
          * */
-        //String token = request.getHeader("Authorization");
-        //token = token.replace("Bearer ", "");
-        /*
-         * TODO tenemos que crear tokenManager y pedir los claims para recibir el usuario
-         * */
-        if (false) { // PLACEHOLDER
+        String token = request.getHeader("Authorization");
+        token = token.replace("Bearer ", "");
+
+        Usuario usuario = getUsuariFromToken(token);
+
+        if (!post.getUsuario().equals(usuario) && usuario != null) { // PLACEHOLDER
 
             return new ResponseEntity<>("No eres el propietario de dicho post", HttpStatus.FORBIDDEN);
         }
@@ -73,7 +82,7 @@ public class PostController {
      * Create post
      * */
     @PostMapping("/post")
-    public ResponseEntity<String> create(@RequestBody String json) {
+    public ResponseEntity<String> create(@RequestBody String json, HttpServletRequest request) {
 
         Post post = postManager.fromJsonCreate(json);
 
@@ -84,17 +93,11 @@ public class PostController {
             return new ResponseEntity<>("Error en los campos del post.", HttpStatus.BAD_REQUEST);
         }
 
-        /*
-         * TODO Mirar como recuperar el usuario del TOKEN que se ha validado
-         *
-         * TODO Añadir al post el usuario que lo ha creado.
-         * */
-        if (false) { // PLACEHOLDER
-
-            return new ResponseEntity<>("No eres el propietario de dicho post", HttpStatus.FORBIDDEN);
-        }
-
-
+        String token = request.getHeader("Authorization");
+        token = token.replace("Bearer ", "");
+        Usuario usuario = getUsuariFromToken(token);
+        if (usuario == null) return new ResponseEntity<>("Usuario no valido", HttpStatus.FORBIDDEN);
+        post.setUsuario(usuario);
         postManager.create(post);
 
         return new ResponseEntity<>(HttpStatus.OK);
@@ -104,7 +107,7 @@ public class PostController {
      * Modify post
      * */
     @PutMapping("/post")
-    public ResponseEntity<String> modify(@RequestBody String json) {
+    public ResponseEntity<String> modify(@RequestBody String json, HttpServletRequest request) {
 
         Post post = postManager.fromJsonUpdate(json);
 
@@ -113,11 +116,15 @@ public class PostController {
             return new ResponseEntity<>("No se ha recibido ID o se ha recibido un ID inexistente.", HttpStatus.BAD_REQUEST);
         }
 
+
         /*
-         * TODO El usuario de el token que permite entrar en este metodo,
-         *  tambien ha de ser el mismo que es el propietario del post que quiere modificar
+         * Comprobamos que el usuario es el propietario del post
          * */
-        if (false) { // PLACEHOLDER
+        String token = request.getHeader("Authorization");
+        token = token.replace("Bearer ", "");
+        Usuario usuario = getUsuariFromToken(token);
+
+        if (!post.getUsuario().equals(usuario) && usuario != null) {
 
             return new ResponseEntity<>("No eres el propietario de dicho post", HttpStatus.FORBIDDEN);
         }
@@ -125,6 +132,15 @@ public class PostController {
         postManager.update(post);
 
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+
+    private Usuario getUsuariFromToken(String token) {
+
+        Claims claims = tokenManager.getClaims(token);
+        Long idTokenUsuario = Long.parseLong(claims.get("idusuario").toString());
+
+        return usuarioManager.findById(idTokenUsuario);
     }
 
 }

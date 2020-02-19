@@ -67,7 +67,7 @@ public class PostManager {
             post.setTituloOriginal(jsonObject.get("tituloOriginal").getAsString());
         }
         if (jsonObject.get("tituloTraducido") != null) {
-            post.setTituloTraducido(jsonObject.get("tituloOriginal").getAsString());
+            post.setTituloTraducido(jsonObject.get("tituloTraducido").getAsString());
         }
         if (jsonObject.get("contenidoOriginal") != null) {
             post.setContenidoOriginal(jsonObject.get("contenidoOriginal").getAsString());
@@ -80,7 +80,6 @@ public class PostManager {
         }
 
         post.setCreacion(LocalDate.now());
-        post.setUsuario(usuarioManager.findById((long) 1));
         return post;
     }
 
@@ -99,25 +98,22 @@ public class PostManager {
         if (jsonObject.get("idpost") != null) {
             post = findById(jsonObject.get("idpost").getAsLong());
 
-
             if (post == null) {
                 // CREAMOS UN NUEVO POST YA QUE EL ID NO EXISTE Y NUESTRA DDBB NO LO ENCUENTRA
 
                 post = new Post();
                 post.setCreacion(LocalDate.now());
-                post.setUsuario(usuarioManager.findById((long) 1));
             }
         } else {
             post = new Post();
             post.setCreacion(LocalDate.now());
-            post.setUsuario(usuarioManager.findById((long) 1));
         }
 
         if (jsonObject.get("tituloOriginal") != null) {
             post.setTituloOriginal(jsonObject.get("tituloOriginal").getAsString());
         }
         if (jsonObject.get("tituloTraducido") != null) {
-            post.setTituloTraducido(jsonObject.get("tituloOriginal").getAsString());
+            post.setTituloTraducido(jsonObject.get("tituloTraducido").getAsString());
         }
         if (jsonObject.get("contenidoOriginal") != null) {
             post.setContenidoOriginal(jsonObject.get("contenidoOriginal").getAsString());
