@@ -72,6 +72,13 @@ module.exports = function (ctx) {
 
       // https://quasar.dev/quasar-cli/cli-documentation/handling-webpack
       extendWebpack(cfg) {
+      },
+      env: ctx.dev ? {
+        API_JAVA: JSON.stringify('http://localhost:8080'),
+        API_NODE: JSON.stringify('http://localhost:3000')
+      } : {
+        API_JAVA: 'IP_PRODUCCION', // TODO MODIFICAR CON IP ACTUAL
+        API_NODE: 'IP_PRODUCCION'
       }
     },
 
@@ -177,4 +184,4 @@ module.exports = function (ctx) {
       }
     }
   }
-}
+};
