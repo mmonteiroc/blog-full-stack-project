@@ -3,7 +3,7 @@ const routes = [
     path: '/',
     component: () => import('layouts/PublicLayout.vue'),
     children: [
-      {path: '', component: () => import('pages/Posts.vue')}
+      {path: '', component: () => import('pages/Posts.vue')},
     ]
   },
   {
@@ -14,6 +14,13 @@ const routes = [
       {path: "creation", component: () => import('pages/Form.vue')},
       {path: "updating", component: () => import('pages/Form.vue')},
       {path: "calculadora", component: () => import('pages/Calculadora.vue')}
+    ]
+  },
+  {
+    path: '/login',
+    component: () => import('layouts/EmptyLayout.vue'),
+    children: [
+      {path: '', component: () => import('pages/Login.vue')}
     ]
   }
 ];
