@@ -22,7 +22,7 @@ public class UsuarioController {
     @Autowired
     private UsuarioManager usuarioManager;
 
-    @GetMapping("/user")
+    @GetMapping("/p/user")
     @Transactional
     public List<Usuario> getAll() {
 
@@ -36,7 +36,7 @@ public class UsuarioController {
         return usuarioManager.findAll();
     }
 
-    @GetMapping("/user/{id}")
+    @GetMapping("/p/user/{id}")
     @Transactional
     public Usuario get(@PathVariable("id") Long id) {
         Usuario user = usuarioManager.findById(id);

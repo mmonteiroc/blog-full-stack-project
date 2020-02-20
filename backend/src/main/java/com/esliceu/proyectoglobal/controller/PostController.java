@@ -50,9 +50,27 @@ public class PostController {
     }
 
     /*
+     * Get all de todos los posts
+     * */
+    @GetMapping("/p/post")
+    public List<Post> privateGetAll() {
+        return postManager.findAll();
+    }
+
+    /*
+     * Get by ID
+     * */
+    @GetMapping("/p/post/{id}")
+    public Post privateGetById(@PathVariable("id") Long id) {
+        return postManager.findById(id);
+    }
+
+
+
+    /*
      * Delete de un post
      * */
-    @DeleteMapping("/post/{id}")
+    @DeleteMapping("/p/post/{id}")
     public ResponseEntity<String> delete(@PathVariable("id") Long id, HttpServletRequest request) {
 
         Post post = postManager.findById(id);
@@ -106,7 +124,7 @@ public class PostController {
     /*
      * Modify post
      * */
-    @PutMapping("/post")
+    @PutMapping("/p/post")
     public ResponseEntity<String> modify(@RequestBody String json, HttpServletRequest request) {
 
         Post post = postManager.fromJsonUpdate(json);
