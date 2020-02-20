@@ -1,9 +1,14 @@
 <template>
   <q-page class="bg-grey-2 column flex-center">
 
+
+    <!-- SELECCION DE TRADUCCION PARA NUESTRO CONTENIDO-->
     <q-select filled v-model="editor.idiomaTraduccion" use-input input-debounce="0" label="Idioma a traducir"
               :options="options" @filter="filterFn" style="width: 250px" behavior="menu" value="code"
               @input="translate">
+      <template v-slot:prepend>
+        <q-icon name="g_translate"/>
+      </template>
       <template v-slot:no-option>
         <q-item>
           <q-item-section class="text-grey">
@@ -11,7 +16,12 @@
           </q-item-section>
         </q-item>
       </template>
+      <template v-slot:append v-if="editor.idiomaTraduccion!=null">
+        <q-icon name="close" @click.stop="editor.idiomaTraduccion = null" class="cursor-pointer"/>
+      </template>
     </q-select>
+
+
     <div class="q-pa-md q-gutter-sm row flex-center">
       <div>
         <q-input outlined v-model="editor.tituloOriginal" label="Titulo" class="q-mb-sm bg-white" @input="translate"/>
@@ -33,7 +43,8 @@
 
     <q-page-sticky position="bottom-right" :offset="[50, 18]" v-if="recording">
       <q-btn @click="record" icon="clear" flat rounded>
-        <q-tooltip content-class="bg-purple-5" content-style="font-size: 16px" :offset="[10, 10]">
+        <q-tooltip content-class="bg-purple-5" transition-show="scale"
+                   transition-hide="scale" content-style="font-size: 1em" :offset="[10, 10]">
           Parar grabación
         </q-tooltip>
       </q-btn>
@@ -41,9 +52,9 @@
     </q-page-sticky>
     <q-page-sticky position="right" :offset="[50, 18]">
       <q-fab color="info" icon="keyboard_arrow_up" direction="up">
-        <q-fab-action color="accent" @click="clear" icon="delete_sweep" label="Borrar"/>
-        <q-fab-action color="warning" @click="record" icon="record_voice_over" label="REC"/>
-        <q-fab-action color="positive" @click="onSave" icon="save_alt" label="Guardar"/>
+        <q-fab-action color="accent" @click="clear" icon="delete_sweep" label="Borrar" class="actions-button"/>
+        <q-fab-action color="warning" @click="record" icon="record_voice_over" label="REC" class="actions-button"/>
+        <q-fab-action color="positive" @click="onSave" icon="save_alt" label="Guardar" class="actions-button"/>
       </q-fab>
     </q-page-sticky>
 
@@ -210,5 +221,9 @@
   .editor-content {
     height: 70vh;
     min-width: 40vw;
+  }
+
+  .actions-button {
+    min-width: 7vw;
   }
 </style>
