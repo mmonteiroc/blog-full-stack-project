@@ -26,8 +26,8 @@ public class AppConfig implements WebMvcConfigurer {
         /*
          * Aqui van todos los interceptors que creemos.
          * */
-        registry.addInterceptor(getFilter())
-                .addPathPatterns("/**")
-                .excludePathPatterns("/login");
+        /*
+        * Ex: registry.addInterceptor(getFilter()).addPathPatterns("/**").excludePathPatterns("/login");
+         * */
     }
 }
