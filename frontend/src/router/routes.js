@@ -10,17 +10,18 @@ const routes = [
     path: '/private',
     component: () => import('layouts/PrivateLayout.vue'),
     children: [
-      {path: "posts", component: () => import('pages/Error404.vue')}, //
+      {path: "posts", component: () => import('pages/Error404.vue')},
       {path: "creation", component: () => import('pages/Form.vue')},
       {path: "updating", component: () => import('pages/Form.vue')},
       {path: "calculadora", component: () => import('pages/Calculadora.vue')}
     ]
   },
   {
-    path: '/login',
+    path: '/',
     component: () => import('layouts/EmptyLayout.vue'),
     children: [
-      {path: '', component: () => import('pages/Login.vue')}
+      {path: 'login', component: () => import('pages/Login.vue')},
+      {path: 'register', component: () => import('pages/Register.vue')}
     ]
   }
 ];

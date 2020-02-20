@@ -22,14 +22,14 @@
     </q-select>
 
 
-    <div class="q-pa-md q-gutter-sm row flex-center">
-      <div>
+    <div class="q-pa-md q-gutter-sm row flex-center" style="width: 100%">
+      <div class="editor-container">
         <q-input outlined v-model="editor.tituloOriginal" label="Titulo" class="q-mb-sm bg-white" @input="translate"/>
         <q-editor v-model="editor.contenidoOriginal" class="editor-content" @input="translate"/>
       </div>
 
 
-      <q-card flat bordered>
+      <q-card flat bordered class="editor-container">
         <q-input v-model="editor.tituloTraducido" readonly class="q-mb-sm q-pl-md q-pr-md"/>
         <q-card-section v-html="editor.contenidoTraducido" class="editor-content"/>
       </q-card>
@@ -220,10 +220,14 @@
 <style scoped>
   .editor-content {
     height: 70vh;
-    min-width: 40vw;
+    min-width: 100%;
   }
 
   .actions-button {
     min-width: 7vw;
+  }
+
+  .editor-container {
+    width: 40%;
   }
 </style>

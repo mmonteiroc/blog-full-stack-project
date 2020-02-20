@@ -12,7 +12,7 @@
         <q-input v-model.number="form.altura" type="number" outlined style="min-width: 25%" label="Altura (cm)"
                  class="q-pa-sm"/>
       </div>
-      <q-input v-model.number="form.altura" type="number" outlined style="width: 50%" label="Altura (cm)"
+      <q-input v-model.number="form.edad" type="number" outlined style="width: 50%" label="Edad"
                class="q-pa-sm"/>
 
 
@@ -47,6 +47,8 @@
         form: {
           sexo: '',
           peso: null,
+          altura: null,
+          edad: null
         }
       }
     }

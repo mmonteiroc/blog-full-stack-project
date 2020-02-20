@@ -81,7 +81,7 @@ public class PostController {
     /*
      * Create post
      * */
-    @PostMapping("/post")
+    @PostMapping("/p/post")
     public ResponseEntity<String> create(@RequestBody String json, HttpServletRequest request) {
 
         Post post = postManager.fromJsonCreate(json);
