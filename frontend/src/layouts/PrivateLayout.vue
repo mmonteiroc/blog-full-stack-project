@@ -14,7 +14,7 @@
       </q-toolbar>
     </q-header>
 
-    <q-drawer v-model="left" side="left" bordered>
+    <q-drawer v-model="left" side="left" overlay bordered>
       <!-- drawer content -->
       <q-list>
         <q-item-label header class="flex flex-center" style="font-size: 2em">Menu</q-item-label>
