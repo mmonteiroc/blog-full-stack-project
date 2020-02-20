@@ -1,7 +1,7 @@
 <template>
   <q-page class="flex flex-center gradient-background">
     <ul class="lista">
-      <li v-for="post in posts">
+      <li v-for="post in postsFiltered">
         <q-card flat bordered class="post bg-white q-mb-sm">
           <q-card-section>
             <div class="row items-center no-wrap">
@@ -33,28 +33,36 @@
 </template>
 
 <script>
-  const posts = [{
-    titulo: "Post 1",
-    fecha: "24/02/2020",
-    contenido: "Cointenido del post 1 sdfgksudghfakhjgsdkfhjgadkjhagskdjhfgadskjhfgahkjdsgfkj",
-    contenidoCaption: "..."
-  }, {
-    titulo: "Post 1",
-    fecha: "24/02/2020",
-    contenido: "Cointenido del post 1 sdfgksudghfakhjgsdkfhjgadkjhagskdjhfgadskjhfgahkjdsgfkj" +
-      "Cointenido del post 1 sdfgksudghfakhjgsdkfhjgadkjhagskdjhfgadskjhfgahkjdsgfkj" +
-      "Cointenido del post 1 sdfgksudghfakhjgsdkfhjgadkjhagskdjhfgadskjhfgahkjdsgfkj" +
-      "Cointenido del post 1 sdfgksudghfakhjgsdkfhjgadkjhagskdjhfgadskjhfgahkjdsgfkj" +
-      "Cointenido del post 1 sdfgksudghfakhjgsdkfhjgadkjhagskdjhfgadskjhfgahkjdsgfkj" +
-      "",
-    contenidoCaption: "..."
-  }];
+
+  const allPosts = [];
   export default {
     name: "Posts",
     data() {
       return {
         expanded: false,
-        posts
+        allPosts,
+        postsFiltered: []
+      }
+    },
+    async created() {
+      /*
+      * Inicializamos todos los posts de nuestro blog
+      * */
+      const posts = await this.$axiosJava.get('/post');
+      posts.data.map(post => {
+        allPosts.push({
+          titulo: post.tituloTraducido,
+          fecha: post.creacion,
+          contenido: post.contenidoTraducido
+        })
+      });
+      this.postsFiltered = this.allPosts;
+    },
+    methods: {
+      filter() {
+
+        // TODO Implementar filtro
+
       }
     }
   }
