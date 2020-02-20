@@ -31,6 +31,12 @@
     </q-page-sticky>
 
 
+    <q-page-sticky position="bottom-right" :offset="[50, 18]" v-if="recording">
+      <q-tooltip content-class="bg-purple-5" content-style="font-size: 16px" :offset="[10, 10]">
+        Grabando voz
+      </q-tooltip>
+      <q-spinner-puff color="deep-orange" size="6em"/>
+    </q-page-sticky>
     <q-page-sticky position="right" :offset="[50, 18]">
       <q-fab color="info" icon="keyboard_arrow_up" direction="up">
         <q-fab-action color="accent" @click="clear" icon="delete_sweep" label="Borrar"/>
@@ -78,6 +84,8 @@
         })
       })
     },
+
+
     data() {
       return {
         editor: {
@@ -88,9 +96,12 @@
           idiomaTraduccion: null
         },
         stringOptions,
-        options: stringOptions
+        options: stringOptions,
+        recording: false
       }
     },
+
+
     methods: {
       async translate() {
         if (this.editor.idiomaTraduccion === null) this.editor.idiomaTraduccion = this.options[0];
@@ -136,28 +147,18 @@
         this.editor.tituloTraducido = resultado[0].substr(1, resultado[0].length - 2);
         this.editor.contenidoTraducido = resultado[1];
 
-
       },
       onSave() {
-        console.log(this.editor.idiomaTraduccion);
         const bar = this.$refs.bar;
-
         bar.start();
-
-        /*
-        * TODO cuando se haga la peticion ajax de guardado, al salir del await, tendremos que hacer el stop de la barra
-        * */
-        this.timer = setTimeout(() => {
-          if (this.$refs.bar) {
-            this.$refs.bar.stop()
-          }
-        }, Math.random() * 3000 + 1000)
-
+        this.$refs.bar.stop();
       },
       record() {
+        this.recording = !this.recording;
         /*
         * TODO la grabacion de audio + recibimiento
         * */
+
       },
       clear() {
         this.editor.tituloOriginal = '';
@@ -165,6 +166,7 @@
         this.editor.contenidoTraducido = '';
         this.editor.contenidoOriginal = '';
         this.editor.idiomaTraduccion = null;
+        this.recording = false;
       },
       filterFn(val, update) {
         if (val === '') {
