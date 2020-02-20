@@ -100,7 +100,7 @@ public class PostController {
         post.setUsuario(usuario);
         postManager.create(post);
 
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>("Post guardado correctamente", HttpStatus.OK);
     }
 
     /*

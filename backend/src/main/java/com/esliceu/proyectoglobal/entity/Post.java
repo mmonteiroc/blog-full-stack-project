@@ -116,4 +116,18 @@ public class Post {
     public void setUsuario(Usuario usuario) {
         this.usuario = usuario;
     }
+
+    @Override
+    public String toString() {
+        return "Post{" +
+                "idpost=" + idpost +
+                ", tituloOriginal='" + tituloOriginal + '\'' +
+                ", tituloTraducido='" + tituloTraducido + '\'' +
+                ", contenidoOriginal='" + contenidoOriginal + '\'' +
+                ", contenidoTraducido='" + contenidoTraducido + '\'' +
+                ", idiomaTraducido='" + idiomaTraducido + '\'' +
+                ", creacion=" + creacion +
+                ", usuario=" + usuario +
+                '}';
+    }
 }
