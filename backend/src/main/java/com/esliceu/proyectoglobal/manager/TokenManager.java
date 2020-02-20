@@ -30,4 +30,16 @@ public class TokenManager {
         }
         return claims;
     }
+    public boolean validateToken(String token){
+        try {
+            Claims claims = Jwts.parser()
+                    .setSigningKey(environment.getProperty("jwt.secret").getBytes())
+                    .parseClaimsJws(token)
+                    .getBody();
+        } catch (Exception e) {
+            return false;
+        }
+        return true;
+    }
+
 }
