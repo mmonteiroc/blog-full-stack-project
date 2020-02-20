@@ -32,10 +32,12 @@
 
 
     <q-page-sticky position="bottom-right" :offset="[50, 18]" v-if="recording">
-      <q-tooltip content-class="bg-purple-5" content-style="font-size: 16px" :offset="[10, 10]">
-        Grabando voz
-      </q-tooltip>
-      <q-spinner-puff color="deep-orange" size="6em"/>
+      <q-btn @click="record" icon="clear" flat rounded>
+        <q-tooltip content-class="bg-purple-5" content-style="font-size: 16px" :offset="[10, 10]">
+          Parar grabación
+        </q-tooltip>
+      </q-btn>
+      <q-spinner-bars color="red-14" size="3em"/>
     </q-page-sticky>
     <q-page-sticky position="right" :offset="[50, 18]">
       <q-fab color="info" icon="keyboard_arrow_up" direction="up">
@@ -59,7 +61,7 @@
 </template>
 <script>
   const stringOptions = [];
-  const API_TRANSTALET_URL = 'http://server247.cfgs.esliceu.net/bloggeri18n/blogger.php';
+  const API_TRANSTALATE_URL = 'http://server247.cfgs.esliceu.net/bloggeri18n/blogger.php';
 
   export default {
     name: "Form",
@@ -69,8 +71,9 @@
     async created() {
       /*
       * Pintamos todas las opciones de traduccion
+      * TODO mirar como hacer las peticiones con AXIOS.
       * */
-      const idiomas = await fetch(API_TRANSTALET_URL, {
+      const idiomas = await fetch(API_TRANSTALATE_URL, {
         method: 'POST',
         body: JSON.stringify({
           MethodName: 'languages',
@@ -107,10 +110,14 @@
         if (this.editor.idiomaTraduccion === null) this.editor.idiomaTraduccion = this.options[0];
 
 
+        /*
+        * TODO mirar como hacer abort para los translate.
+        * TODO mirar como hacer las peticiones con AXIOS.
+        * */
         const promesas = [];
         // titulo
         promesas.push(
-          fetch(API_TRANSTALET_URL, {
+          fetch(API_TRANSTALATE_URL, {
             method: 'post',
             body: JSON.stringify({
               MethodName: 'translate',
@@ -124,7 +131,7 @@
         );
         // Contenido
         promesas.push(
-          fetch(API_TRANSTALET_URL, {
+          fetch(API_TRANSTALATE_URL, {
             method: 'post',
             body: JSON.stringify({
               MethodName: 'translate',
@@ -154,11 +161,25 @@
         this.$refs.bar.stop();
       },
       record() {
-        this.recording = !this.recording;
         /*
         * TODO la grabacion de audio + recibimiento
         * */
 
+        if (this.recording) {
+          /*
+          * Parar de grabar.
+          * Coger el blob.
+          * Enviarlo a la API de Joan.
+          * Recuperar los datos y escribirlos.
+          * Mirar si se traducen automaticamente.
+          * */
+        } else {
+          /*
+          * Habilitar API de audio para grabar y grabar.
+          * */
+        }
+
+        this.recording = !this.recording;
       },
       clear() {
         this.editor.tituloOriginal = '';
