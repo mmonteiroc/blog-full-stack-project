@@ -14,8 +14,8 @@ const instanceNodeJS = axios.create({
 * Añadimos el TOKEN
 *
 * */
-instance.interceptors.request.use(function (config) {
-    const token = localStorage.getItem('token');
+instanceJava.interceptors.request.use(function (config) {
+  const token = localStorage.getItem('token');
   if (token != null) {
     config.headers.Authorization = `Bearer ${token}`;
   }
@@ -24,7 +24,7 @@ instance.interceptors.request.use(function (config) {
   return Promise.reject(error);
 });
 
-instance.interceptors.response.use(function (response) {
+instanceJava.interceptors.response.use(function (response) {
 
   return response;
 }, function (error) {
