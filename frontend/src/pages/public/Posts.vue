@@ -48,7 +48,7 @@
       /*
       * Inicializamos todos los posts de nuestro blog
       * */
-      const posts = await this.$axiosJava.get('/p/post');
+      const posts = await this.$axiosJava.get('/post');
       posts.data.map(post => {
         allPosts.push({
           titulo: post.tituloTraducido,

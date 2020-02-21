@@ -22,12 +22,12 @@ public class AppConfig implements WebMvcConfigurer {
     }
 
     @Override
-    public void addInterceptors(InterceptorRegistry registry) {
+    public   void addInterceptors(InterceptorRegistry registry) {
         /*
          * Aqui van todos los interceptors que creemos.
          * */
 
-         //registry.addInterceptor(getFilter()).addPathPatterns("/p/**")  ;
+         registry.addInterceptor(getFilter()).addPathPatterns("/p/**")  ;
 
     }
 }
