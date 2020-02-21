@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import axios from 'axios'
+import router from "../router/index"
 
 const instanceJava = axios.create({
   baseURL: process.env.API_JAVA
@@ -14,8 +15,8 @@ const instanceNodeJS = axios.create({
 * Añadimos el TOKEN
 *
 * */
-instance.interceptors.request.use(function (config) {
-    const token = localStorage.getItem('token');
+instanceJava.interceptors.request.use(function (config) {
+  const token = localStorage.getItem('token');
   if (token != null) {
     config.headers.Authorization = `Bearer ${token}`;
   }
@@ -24,16 +25,17 @@ instance.interceptors.request.use(function (config) {
   return Promise.reject(error);
 });
 
-instance.interceptors.response.use(function (response) {
+instanceJava.interceptors.response.use(function (response) {
 
   return response;
 }, function (error) {
 
   if (error.response.status === 401) {
-    window.location = '/#/login' // PLACEHOLDER TODO --> Cambiar esto por el router
+    //window.location = '/#/login'; // PLACEHOLDER TODO --> Cambiar esto por el router
+    //router().push('/login');
   }
 
-  return Promise.reject(error);
+  return Promise.reject(error.response);
 });
 
 
