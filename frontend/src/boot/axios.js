@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import axios from 'axios'
+import router from "../router/index"
 
 const instanceJava = axios.create({
   baseURL: process.env.API_JAVA
@@ -30,10 +31,11 @@ instanceJava.interceptors.response.use(function (response) {
 }, function (error) {
 
   if (error.response.status === 401) {
-    window.location = '/#/login' // PLACEHOLDER TODO --> Cambiar esto por el router
+    //window.location = '/#/login'; // PLACEHOLDER TODO --> Cambiar esto por el router
+    //router().push('/login');
   }
 
-  return Promise.reject(error);
+  return Promise.reject(error.response);
 });
 
 
