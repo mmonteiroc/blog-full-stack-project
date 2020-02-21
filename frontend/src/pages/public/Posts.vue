@@ -49,14 +49,16 @@
       * Inicializamos todos los posts de nuestro blog
       * */
       const posts = await this.$axiosJava.get('/post');
-      posts.data.map(post => {
-        allPosts.push({
-          titulo: post.tituloTraducido,
-          fecha: post.creacion,
-          contenido: post.contenidoTraducido
-        })
-      });
-      this.postsFiltered = this.allPosts;
+      if (posts) {
+        posts.data.map(post => {
+          allPosts.push({
+            titulo: post.tituloTraducido,
+            fecha: post.creacion,
+            contenido: post.contenidoTraducido
+          })
+        });
+        this.postsFiltered = this.allPosts;
+      }
     },
     methods: {
       filter() {
