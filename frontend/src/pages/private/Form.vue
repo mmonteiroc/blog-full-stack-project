@@ -102,15 +102,19 @@
       if (this.$route.params.id) {
         this.editor.idpost = this.$route.params.id;
         // Tenemos que recoger los datos del post.
-        const post = await this.$axiosJava.get('/p/post/' + this.editor.idpost);
-        this.editor = post.data;
+        const response = await this.$axiosJava.get('/p/post/' + this.editor.idpost);
+        if (response.status === 404) {
+          // TODO redirect hacia el /private/posts
+        } else {
+          this.editor = response.data;
+          this.editor.idiomaTraduccion = {
+            code: response.data.idiomaTraducido
+          };
+          stringOptions.map(option => {
+            if (option.code === this.editor.idiomaTraduccion.code) this.editor.idiomaTraduccion.label = option.label
+          })
+        }
 
-        this.editor.idiomaTraduccion = {
-          code: post.data.idiomaTraducido
-        };
-        stringOptions.map(option => {
-          if (option.code === this.editor.idiomaTraduccion.code) this.editor.idiomaTraduccion.label = option.label
-        })
       }
     },
 
