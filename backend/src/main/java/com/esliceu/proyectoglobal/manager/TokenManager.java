@@ -1,5 +1,6 @@
 package com.esliceu.proyectoglobal.manager;
 
+import com.esliceu.proyectoglobal.entity.Usuario;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,8 @@ import org.springframework.stereotype.Service;
 public class TokenManager {
     @Autowired
     private Environment environment;
+    @Autowired
+    private UsuarioManager usuarioManager;
 
     public Claims getClaims(String token) {
         Claims claims = null;
@@ -42,4 +45,14 @@ public class TokenManager {
         return true;
     }
 
+    public Usuario getUsuariFromToken(String token) {
+
+        try {
+            Claims claims = getClaims(token);
+            Long idTokenUsuario = Long.parseLong(claims.get("idusuario").toString());
+            return usuarioManager.findById(idTokenUsuario);
+        } catch (Exception e) {
+            return null;
+        }
+    }
 }
