@@ -75,8 +75,8 @@ public class PostManager {
         if (jsonObject.get("contenidoTraducido") != null) {
             post.setContenidoTraducido(jsonObject.get("contenidoTraducido").getAsString());
         }
-        if (jsonObject.get("idiomaTraducido") != null) {
-            post.setIdiomaTraducido(jsonObject.get("idiomaTraducido").getAsString());
+        if (jsonObject.get("idiomaTraduccion") != null) {
+            post.setIdiomaTraducido(jsonObject.get("idiomaTraduccion").getAsString());
         }
 
         post.setCreacion(LocalDate.now());
@@ -121,8 +121,8 @@ public class PostManager {
         if (jsonObject.get("contenidoTraducido") != null) {
             post.setContenidoTraducido(jsonObject.get("contenidoTraducido").getAsString());
         }
-        if (jsonObject.get("idiomaTraducido") != null) {
-            post.setIdiomaTraducido(jsonObject.get("idiomaTraducido").getAsString());
+        if (jsonObject.get("idiomaTraduccion") != null) {
+            post.setIdiomaTraducido(jsonObject.get("idiomaTraduccion").getAsString());
         }
 
         return post;
