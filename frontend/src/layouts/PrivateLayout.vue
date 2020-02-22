@@ -57,7 +57,7 @@
             title: 'Formulario',
             caption: 'Añadir un nuevo post',
             icon: 'create',
-            link: '/private/creation'
+            link: '/private/create'
           },
           {
             title: 'Caloreister 3000',

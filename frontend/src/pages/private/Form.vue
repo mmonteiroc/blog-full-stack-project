@@ -96,7 +96,22 @@
           label: idioma.name,
           code: idioma.code
         })
-      })
+      });
+
+      // Si es modificar, recogemos todos los datos del post para añadir la info a la variable reactiva
+      if (this.$route.params.id) {
+        this.editor.idpost = this.$route.params.id;
+        // Tenemos que recoger los datos del post.
+        const post = await this.$axiosJava.get('/p/post/' + this.editor.idpost);
+        this.editor = post.data;
+
+        this.editor.idiomaTraduccion = {
+          code: post.data.idiomaTraducido
+        };
+        stringOptions.map(option => {
+          if (option.code === this.editor.idiomaTraduccion.code) this.editor.idiomaTraduccion.label = option.label
+        })
+      }
     },
 
 
@@ -166,10 +181,29 @@
         this.editor.contenidoTraducido = resultado[1];
 
       },
-      onSave() {
+      async onSave() {
         const bar = this.$refs.bar;
         bar.start();
+
+        const toSave = {
+          tituloOriginal: this.editor.tituloOriginal,
+          tituloTraducido: this.editor.tituloTraducido,
+          contenidoOriginal: this.editor.contenidoOriginal,
+          contenidoTraducido: this.editor.contenidoTraducido,
+          idiomaTraduccion: this.editor.idiomaTraduccion.code
+        };
+        if (this.editor.idpost) {
+          // MODIFICAMOS POST
+          toSave.idpost = this.editor.idpost;
+          await this.$axiosJava.put('/p/post', toSave)
+        } else {
+          // AÑADIMOS POST
+          await this.$axiosJava.post('/p/post', toSave)
+
+        }
+
         this.$refs.bar.stop();
+
       },
       record() {
         /*

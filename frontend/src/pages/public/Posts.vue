@@ -34,13 +34,12 @@
 
 <script>
 
-  const allPosts = [];
   export default {
     name: "Posts",
     data() {
       return {
         expanded: false,
-        allPosts,
+        allPosts: [],
         postsFiltered: []
       }
     },
@@ -51,7 +50,7 @@
       const posts = await this.$axiosJava.get('/post');
       if (posts) {
         posts.data.map(post => {
-          allPosts.push({
+          this.allPosts.push({
             titulo: post.tituloTraducido,
             fecha: post.creacion,
             contenido: post.contenidoTraducido
