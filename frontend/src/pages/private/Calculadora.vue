@@ -381,6 +381,15 @@
         const APP_ID = "f8c6bbf3";
         const API_KEY = "09beb6c98488ceda8d4fbdcaa31557f1";
         console.log("API SEARCH OF: ", foodName);
+
+
+        /*
+        * IMPORTANT -- ESTA URL API, no la ponemos en el
+        * properties ya que los params van en la URL, y
+        * daria igual poner solo en comienzo en el properties,
+        * ya que si cambia el comienzo, seguramente tambien
+        * cambien la manera de enviar los params
+        * */
         const result = await fetch("https://api.edamam.com/api/food-database/parser?app_id=" + APP_ID + "&app_key=" + API_KEY + "&ingr=" + foodName).then(x => x.json());
         if (result.parsed.length > 0) {
           const kcal = result.parsed[0].food.nutrients.ENERC_KCAL;

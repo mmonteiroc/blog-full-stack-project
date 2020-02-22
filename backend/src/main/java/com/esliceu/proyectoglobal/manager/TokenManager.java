@@ -20,6 +20,7 @@ public class TokenManager {
     private Environment environment;
     @Autowired
     private UsuarioManager usuarioManager;
+    // TODO Preguntar a joan, si se puede llamar en horizontal
 
     public Claims getClaims(String token) {
         Claims claims = null;

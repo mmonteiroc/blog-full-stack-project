@@ -127,7 +127,7 @@ public class PostController {
         String token = request.getHeader("Authorization");
         token = token.replace("Bearer ", "");
         Usuario usuario = tokenManager.getUsuariFromToken(token);
-        if (usuario == null) return new ResponseEntity<>("Usuario no valido", HttpStatus.FORBIDDEN);
+        if (usuario == null) return new ResponseEntity<>("Usuario no valido", HttpStatus.BAD_REQUEST);
         post.setUsuario(usuario);
         postManager.create(post);
 
