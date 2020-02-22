@@ -72,7 +72,6 @@
 </template>
 <script>
   const stringOptions = [];
-  const API_TRANSTALATE_URL = 'http://server247.cfgs.esliceu.net/bloggeri18n/blogger.php';
 
   export default {
     name: "Form",
@@ -84,7 +83,7 @@
       * Pintamos todas las opciones de traduccion
       * TODO mirar como hacer las peticiones con AXIOS.
       * */
-      const idiomas = await fetch(API_TRANSTALATE_URL, {
+      const idiomas = await fetch(this.API_TRANSTALATE_URL, {
         method: 'POST',
         body: JSON.stringify({
           MethodName: 'languages',
@@ -130,24 +129,31 @@
         },
         stringOptions,
         options: stringOptions,
-        recording: false
+        recording: false,
+        voiceRecordStream: null,
+        voiceRecorder: null,
+        URL_API_TRANSCRIPT: process.env.URL_API_TRANSCRIPT,
+        API_TRANSTALATE_URL: process.env.API_TRANSTALATE_URL,
+        MIN_CONFIANCA_ACEPTABLE: 0.7
       }
     },
 
 
     methods: {
       async translate() {
-        if (this.editor.idiomaTraduccion === null) this.editor.idiomaTraduccion = this.options[0];
 
+        if (this.editor.idiomaTraduccion === null) this.editor.idiomaTraduccion = this.options[0];
 
         /*
         * TODO mirar como hacer abort para los translate.
         * TODO mirar como hacer las peticiones con AXIOS.
         * */
+
+
         const promesas = [];
         // titulo
         promesas.push(
-          fetch(API_TRANSTALATE_URL, {
+          fetch(this.API_TRANSTALATE_URL, {
             method: 'post',
             body: JSON.stringify({
               MethodName: 'translate',
@@ -161,7 +167,7 @@
         );
         // Contenido
         promesas.push(
-          fetch(API_TRANSTALATE_URL, {
+          fetch(this.API_TRANSTALATE_URL, {
             method: 'post',
             body: JSON.stringify({
               MethodName: 'translate',
@@ -209,7 +215,7 @@
         this.$refs.bar.stop();
 
       },
-      record() {
+      async record() {
         /*
         * TODO la grabacion de audio + recibimiento
         * */
@@ -217,18 +223,51 @@
         if (this.recording) {
           /*
           * Parar de grabar.
-          * Coger el blob.
-          * Enviarlo a la API de Joan.
-          * Recuperar los datos y escribirlos.
-          * Mirar si se traducen automaticamente.
+          * TODO Mirar si se traducen automaticamente.
           * */
+
+          this.voiceRecorder.stop();
+          this.voiceRecordStream.getTracks().forEach(function (track) {
+            track.stop();
+          });
         } else {
           /*
           * Habilitar API de audio para grabar y grabar.
           * */
+          this.voiceRecordStream = await navigator.mediaDevices.getUserMedia({audio: true, video: false});
+
+          // Comenzamos a grabar
+          this.voiceRecorder = new MediaRecorder(this.voiceRecordStream);
+          this.voiceRecorder.start();
+
+          /*
+          * Solo se llama caundo recorder.stop()
+          * */
+          this.voiceRecorder.ondataavailable = (event) => {
+            // event.data => BLOB
+            this.transcript(event.data)
+          }
         }
 
         this.recording = !this.recording;
+      },
+      async transcript(blob) {
+
+        const formData = new FormData();
+        formData.append("arxiu", blob);
+        formData.append("MethodName", "transcribe_sync");
+        formData.append("params", "{}");
+        let transcripcion = await fetch(this.URL_API_TRANSCRIPT, {
+          method: "post",
+          body: formData
+        }).then(x => x.json());
+        transcripcion = transcripcion[0];
+
+        if (transcripcion.confianca && transcripcion.confianca > this.MIN_CONFIANCA_ACEPTABLE) {
+          this.editor.contenidoOriginal += ' ' + transcripcion.transcripcio;
+          this.translate();
+        }
+
       },
       clear() {
         this.editor.tituloOriginal = '';
