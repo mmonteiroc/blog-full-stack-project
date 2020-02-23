@@ -4,8 +4,6 @@ import com.esliceu.proyectoglobal.entity.Post;
 import com.esliceu.proyectoglobal.entity.Usuario;
 import com.esliceu.proyectoglobal.manager.PostManager;
 import com.esliceu.proyectoglobal.manager.TokenManager;
-import com.esliceu.proyectoglobal.manager.UsuarioManager;
-import io.jsonwebtoken.Claims;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -137,7 +135,7 @@ public class PostController {
     /*
      * Modify post
      * */
-    @PutMapping("/p/post")
+    @PutMapping(value = "/p/post")
     @Transactional
     public ResponseEntity<String> modify(@RequestBody String json, HttpServletRequest request) {
 

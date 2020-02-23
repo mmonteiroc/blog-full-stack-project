@@ -5,10 +5,9 @@ import com.esliceu.proyectoglobal.entity.Usuario;
 import com.esliceu.proyectoglobal.manager.TokenManager;
 import com.esliceu.proyectoglobal.manager.UsuarioManager;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -57,7 +56,7 @@ public class UsuarioController {
      * Este metodo como bien podemos observar nos devolvera
      * los posts del usuario con el que estemos loggeado
      *
-     * ESte metodo nos servira por ejemplo en la parte
+     * Este metodo nos servira por ejemplo en la parte
      * privada de nuestra aplicacion la cual tendremos
      * una vista de nuestros posts
      * */
@@ -80,8 +79,5 @@ public class UsuarioController {
 
         return user.getPosts();
     }
-    /*
-     * TODO tenemos que hacer en el futuro la posibilidad de añadir / borrar / actualizar usuarios
-     * */
 
 }

@@ -21,10 +21,10 @@ import java.util.List;
 public class UsuarioManager {
 
     @Autowired
-    Gson gson;
+    private Gson gson;
 
     @Autowired
-    UsuarioRepository usuarioRepository;
+    private UsuarioRepository usuarioRepository;
 
     public List<Usuario> findAll() {
         List<Usuario> toReturn = new LinkedList<>();
@@ -48,30 +48,5 @@ public class UsuarioManager {
         usuarioRepository.delete(user);
     }
 
-
-    public Usuario fromJSON(String usuario) {
-        Usuario user = new Usuario();
-
-        JsonObject jsonObject = gson.fromJson(usuario, JsonObject.class);
-
-
-        Long idusuario = jsonObject.get("idusuario").getAsLong();
-        String nombre = jsonObject.get("nombre").getAsString();
-        String email = jsonObject.get("email").getAsString();
-        String password = jsonObject.get("password").getAsString();
-        String username = jsonObject.get("username").getAsString();
-        String apellidos = jsonObject.get("apellidos").getAsString();
-        String authMode = jsonObject.get("authMode").getAsString();
-
-        user.setEmail(email);
-        user.setPassword(password);
-        user.setIdusuario(idusuario);
-        user.setNombre(nombre);
-        user.setUsername(username);
-        user.setApellidos(apellidos);
-        user.setAuthMode(authMode);
-
-        return user;
-    }
 
 }
