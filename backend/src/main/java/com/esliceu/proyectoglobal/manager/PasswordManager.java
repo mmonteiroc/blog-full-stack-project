@@ -34,6 +34,7 @@ public class PasswordManager {
                 hexString.append(hex);
             }
 
+
             return hexString.toString();
         } catch (Exception ex) {
             throw new RuntimeException(ex);
