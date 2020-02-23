@@ -11,7 +11,26 @@
           </q-avatar>
           Es liceu Solutions
         </q-toolbar-title>
+        <q-btn color="indigo-10" icon="settings" round flat>
+          <q-menu>
+            <q-list style="min-width: 100px">
+              <q-item v-close-popup class="flex flex-center">
+                <q-icon name="wb_sunny"/>
+
+                <q-toggle
+                  v-model="value"
+                  color="indigo-10"
+                  @input="changeColor()"
+                />
+                <q-icon name="nights_stay"/>
+
+              </q-item>
+
+            </q-list>
+          </q-menu>
+        </q-btn>
       </q-toolbar>
+
     </q-header>
 
     <q-drawer v-model="left" side="left" overlay bordered>
@@ -45,6 +64,7 @@
 
     data() {
       return {
+        value: this.$q.dark.isActive,
         left: false,
         linksMenu: [
           {
@@ -71,6 +91,12 @@
             link: '/logout'
           }
         ]
+      }
+    },
+    methods: {
+      changeColor() {
+        console.log("hola")
+        this.$q.dark.toggle();
       }
     }
   }
