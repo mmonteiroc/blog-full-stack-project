@@ -1,14 +1,9 @@
 <template>
   <q-page
-    class="window-height window-width row justify-center items-center"
-    style="background: linear-gradient(#8274C5, #5A4A9F);"
+    class="window-height window-width row justify-center items-center bg-grey-3"
   >
-    <div class="column q-pa-lg">
-      <div class="row">
 
-        <div class="column q-pa-lg">
-          <div class="row">
-            <q-card square class="shadow-24" style="width: 20vw">
+            <q-card  class="shadow-4 col-11 col-sm-3" >
 
               <q-card-section class="bg-deep-purple-7">
 
@@ -23,13 +18,13 @@
 
               <q-card-section>
                 <q-form class="q-px-sm q-pt-xl q-pb-lg">
-                  <q-input outlined clearable v-model="person.email" type="email" label="Email" class="q-mb-sm">
+                  <q-input outlined clearable v-model="person.email" type="email" label="Email" class="q-mb-sm" placeholder="me@myaccount.org">
                     <template v-slot:prepend>
                       <q-icon name="email"/>
                     </template>
                   </q-input>
                   <q-input outlined clearable v-model="person.username" type="username" label="Username"
-                           class="q-mb-sm">
+                           class="q-mb-sm" placeholder="jdoe_27">
                     <template v-slot:prepend>
                       <q-icon name="person"/>
                     </template>
@@ -40,12 +35,12 @@
                       <q-icon name="lock"/>
                     </template>
                   </q-input>
-                  <q-input outlined clearable v-model="person.name" type="text" label="Name" class="q-mb-sm">
+                  <q-input outlined clearable v-model="person.name" type="text" label="Name" class="q-mb-sm" placeholder="Jane">
                     <template v-slot:prepend>
                       <q-icon name="person"/>
                     </template>
                   </q-input>
-                  <q-input outlined clearable v-model="person.surname" type="text" label="Surname" class="">
+                  <q-input outlined clearable v-model="person.surname" type="text" label="Surname" class="" placeholder="Doe">
                     <template v-slot:prepend>
                       <q-icon name="person"/>
                     </template>
@@ -53,17 +48,15 @@
                 </q-form>
               </q-card-section>
 
-              <q-card-actions class="q-px-lg flex flex-center">
-                <q-btn size="lg" color="primary" class=" text-white q-mb-sm button-action" label="Register !"/>
-                <q-btn unelevated size="md" color="secondary" class="text-white q-mb-sm button-action"
-                       label="Have an account ?" to="/login"/>
+              <q-card-actions class="q-px-lg">
+                <q-btn size="lg" color="primary" class=" text-white q-mb-sm button-action full-width" label="Register !"/>
+                <q-btn unelevated size="md" flat color="accent" class=" q-mb-sm  full-width"
+                       label="Sign In" to="/login"/>
+
               </q-card-actions>
 
             </q-card>
-          </div>
-        </div>
-      </div>
-    </div>
+
   </q-page>
 </template>
 

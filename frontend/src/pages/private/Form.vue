@@ -79,10 +79,6 @@
     * Funcion al inicial la instancia de VUE
     * */
     async created() {
-      /*
-      * Pintamos todas las opciones de traduccion
-      * TODO mirar como hacer las peticiones con AXIOS.
-      * */
       const idiomas = await fetch(this.API_TRANSTALATE_URL, {
         method: 'POST',
         body: JSON.stringify({
@@ -101,6 +97,8 @@
       if (this.$route.params.id) {
         this.editor.idpost = this.$route.params.id;
         // Tenemos que recoger los datos del post.
+
+
         const response = await this.$axiosJava.get('/p/post/' + this.editor.idpost);
         if (response.status === 404) {
           // TODO redirect hacia el /private/posts

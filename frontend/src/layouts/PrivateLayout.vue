@@ -35,10 +35,37 @@
 
     <q-drawer v-model="left" side="left" overlay bordered>
       <!-- drawer content -->
-      <q-list>
-        <q-item-label header class="flex flex-center" style="font-size: 2em">Menu</q-item-label>
-        <q-separator/>
+      <div class="row q-mt-md">
+        <div class="col-4 flex flex-center">
+          <q-avatar rounded size="50px">
+            <img :src="user.imgUrl" alt="">
+          </q-avatar>
+        </div>
 
+        <div class="col-8">
+          <div class="row flex-center">
+            <span class="text-h5">{{user.name}}</span>
+          </div>
+          <q-separator class="q-mt-sm q-mb-sm"/>
+          <div class="row flex-center justify-evenly q-mb-sm">
+            <q-btn flat icon="person" color="primary">
+              <q-tooltip content-class="bg-indigo" :delay="300" :offset="[10, 10]">
+                Account
+              </q-tooltip>
+            </q-btn>
+
+            <q-btn icon="lock" flat  color="accent"  @click="confirmDisconnect = true">
+              <q-tooltip content-class="bg-red" :delay="300" :offset="[10, 10]">
+                Log Out
+              </q-tooltip>
+            </q-btn>
+          </div>
+
+        </div>
+      </div>
+
+      <q-list>
+        <q-separator/>
         <q-item clickable v-ripple v-for="link in linksMenu" :to="link.link">
           <q-item-section avatar top>
             <q-avatar :icon="link.icon" color="light-blue-6" text-color="white"/>
@@ -55,6 +82,21 @@
       <router-view/>
     </q-page-container>
 
+    <q-dialog v-model="confirmDisconnect" persistent>
+      <q-card>
+        <q-card-section class="row items-center">
+          <q-avatar rounded size="50px">
+            <img :src="user.imgUrl" alt="">
+          </q-avatar>
+          <span class="q-ml-sm">Estas seguro que deseas desconectarte?</span>
+        </q-card-section>
+
+        <q-card-actions align="right">
+          <q-btn flat label="Cancel" color="primary" v-close-popup />
+          <q-btn flat label="Desconectar" color="primary" v-close-popup to="/" @click="disconnect"/>
+        </q-card-actions>
+      </q-card>
+    </q-dialog>
   </q-layout>
 </template>
 
@@ -64,8 +106,18 @@
 
     data() {
       return {
+        confirmDisconnect: false,
         value: this.$q.dark.isActive,
         left: false,
+
+        /*
+        * Placeholder
+        * TODO --> Que venga del usuario cuando nos loggeamos
+        * */
+        user:{
+          name: "John",
+          imgUrl: 'https://cdn.quasar.dev/img/boy-avatar.png'
+        },
         linksMenu: [
           {
             title: 'Posts',
@@ -96,6 +148,9 @@
     methods: {
       changeColor() {
         this.$q.dark.toggle();
+      },
+      disconnect(){
+        localStorage.removeItem('token')
       }
     }
   }

@@ -33,9 +33,12 @@ export default async ({Vue, router}) => {
     if (error.response.status === 401) {
       router.push('/login')
     }
+    if (error.response.status === 404){
+      router.push('/')
+    }
 
 
-    return Promise.reject(error);
+    return Promise.reject(error.response);
   });
 }
 

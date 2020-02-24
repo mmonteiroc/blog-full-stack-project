@@ -4,7 +4,7 @@ const routes = [
     path: '/',
     component: () => import('layouts/PublicLayout.vue'),
     children: [
-      {path: '', component: () => import('pages/public/Posts.vue')},
+      {path: '', component: () => import('pages/public/Posts.vue')}
     ]
   },
   {
@@ -14,7 +14,7 @@ const routes = [
       {path: "posts", component: () => import('pages/error/Error404.vue')},
       {path: "create", component: () => import('pages/private/Form.vue')},
       {path: "update/:id", component: () => import('pages/private/Form.vue')},
-      {path: "calculadora", component: () => import('pages/private/Calculadora.vue')}
+      {path: "calculadora", component: () => import('pages/private/Calculadora.vue')},
     ],
     beforeEnter: (to, from, next) => {
       const token = localStorage.getItem('token');
