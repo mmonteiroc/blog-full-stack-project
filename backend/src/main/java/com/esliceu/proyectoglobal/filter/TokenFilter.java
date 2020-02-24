@@ -21,7 +21,7 @@ public class TokenFilter implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
 
-        if (request.getMethod().equals("OPTIONS"))return true;
+        if (request.getMethod().equals("OPTIONS")) return true;
 
 
         String authorization = request.getHeader("Authorization");
@@ -29,11 +29,11 @@ public class TokenFilter implements HandlerInterceptor {
         if (authorization != null && !authorization.isEmpty()) {
             String token = authorization.replace("Bearer ", "");
 
-            boolean valid =  tokenManager.validateToken(token);
-            if (!valid){
+            boolean valid = tokenManager.validateToken(token);
+            if (!valid) {
                 response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
                 return false;
-            }else {
+            } else {
                 response.setStatus(HttpServletResponse.SC_OK);
                 return true;
             }

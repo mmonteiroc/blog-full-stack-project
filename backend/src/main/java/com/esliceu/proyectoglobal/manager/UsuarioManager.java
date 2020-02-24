@@ -3,7 +3,6 @@ package com.esliceu.proyectoglobal.manager;
 import com.esliceu.proyectoglobal.entity.Usuario;
 import com.esliceu.proyectoglobal.repository.UsuarioRepository;
 import com.google.gson.Gson;
-import com.google.gson.JsonObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

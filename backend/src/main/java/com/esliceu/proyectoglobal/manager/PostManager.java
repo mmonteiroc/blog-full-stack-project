@@ -4,7 +4,6 @@ import com.esliceu.proyectoglobal.entity.Post;
 import com.esliceu.proyectoglobal.repository.PostRepository;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
-import javafx.geometry.Pos;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

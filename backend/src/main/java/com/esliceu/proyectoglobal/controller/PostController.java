@@ -75,7 +75,6 @@ public class PostController {
     }
 
 
-
     /*
      * Delete de un post
      * */
@@ -165,8 +164,6 @@ public class PostController {
 
         return new ResponseEntity<>(HttpStatus.OK);
     }
-
-
 
 
 }

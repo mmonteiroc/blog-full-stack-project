@@ -5,9 +5,10 @@ import com.esliceu.proyectoglobal.entity.Usuario;
 import com.esliceu.proyectoglobal.manager.TokenManager;
 import com.esliceu.proyectoglobal.manager.UsuarioManager;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
