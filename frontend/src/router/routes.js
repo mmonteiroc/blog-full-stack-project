@@ -20,6 +20,8 @@ const routes = [
       const token = localStorage.getItem('token');
       if (!token) {
         next('login');
+      } else {
+        next();
       }
     }
   },
