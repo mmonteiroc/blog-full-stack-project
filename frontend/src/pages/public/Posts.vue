@@ -10,9 +10,6 @@
                 <div class="text-subtitle2">{{ post.fecha }}</div>
               </div>
 
-              <div class="col-auto">
-                <q-btn color="teal-4" flat rounded label="Share"/>
-              </div>
             </div>
           </q-card-section>
 

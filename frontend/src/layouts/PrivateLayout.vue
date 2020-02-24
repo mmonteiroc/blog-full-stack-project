@@ -95,7 +95,6 @@
     },
     methods: {
       changeColor() {
-        console.log("hola")
         this.$q.dark.toggle();
       }
     }
