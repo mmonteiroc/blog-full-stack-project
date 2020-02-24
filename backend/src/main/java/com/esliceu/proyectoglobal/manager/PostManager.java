@@ -28,9 +28,6 @@ public class PostManager {
     @Autowired
     private Gson gson;
 
-    @Autowired
-    private UsuarioManager usuarioManager;
-
     public List<Post> findAll() {
         List<Post> toReturn = new LinkedList<>();
 
