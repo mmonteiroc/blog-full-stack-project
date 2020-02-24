@@ -34,6 +34,7 @@ export default async ({Vue, router}) => {
       router.push('/login')
     }
 
+
     return Promise.reject(error);
   });
 }
