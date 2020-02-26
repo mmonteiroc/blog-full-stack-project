@@ -107,6 +107,7 @@
       const data = await this.$axiosJava.get('/p/me');
       console.log(data.data);
       this.user.name = data.data.username;
+
     },
     data() {
       return {
@@ -114,12 +115,9 @@
         value: this.$q.dark.isActive,
         left: false,
 
-        /*
-        * Placeholder
-        * TODO --> Que venga del usuario cuando nos loggeamos
-        * */
+
         user:{
-          name: "John",
+          name: "",
           imgUrl: 'https://cdn.quasar.dev/img/boy-avatar.png'
         },
         linksMenu: [
