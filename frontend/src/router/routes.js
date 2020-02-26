@@ -11,7 +11,7 @@ const routes = [
     path: '/private',
     component: () => import('layouts/PrivateLayout.vue'),
     children: [
-      {path: "posts", component: () => import('pages/error/Error404.vue')},
+      {path: "posts", component: () => import('pages/private/Posts.vue')},
       {path: "create", component: () => import('pages/private/Form.vue')},
       {path: "update/:id", component: () => import('pages/private/Form.vue')},
       {path: "calculadora", component: () => import('pages/private/Calculadora.vue')},

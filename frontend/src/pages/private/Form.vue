@@ -215,7 +215,7 @@
           position: 'center',
           avatar: 'https://cdn.quasar.dev/img/boy-avatar.png',
           multiLine: 'true',
-          timeout: 5000
+          timeout: 3000
         })
       },
       async record() {
