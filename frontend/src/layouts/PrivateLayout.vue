@@ -154,7 +154,7 @@
         this.$q.dark.toggle();
       },
       disconnect(){
-        localStorage.removeItem('token')
+        localStorage.removeItem('access_token')
       }
     }
   }

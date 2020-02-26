@@ -24,26 +24,28 @@
               <q-icon name="lock"/>
             </template>
           </q-input>
-            </q-form>
-          </q-card-section>
-          <q-card-section>
-            <div class="text-center q-pa-md q-gutter-md">
+        </q-form>
+      </q-card-section>
+      <q-card-section>
+        <div class="text-center q-pa-md q-gutter-md">
+          <a :href="urlLoginOauthGoogle" style="text-decoration: none">
+            <q-btn round color="red-8">
+              <q-icon name="fab fa-google" color="white" size="1.2rem"/>
+            </q-btn>
+          </a>
 
-              <q-btn round color="red-8">
-                <q-icon name="fab fa-google" size="1.2rem"/>
-              </q-btn>
-
-            </div>
-          </q-card-section>
-          <q-card-actions class="q-px-lg">
-            <q-btn unelevated size="lg" color="primary" class="full-width text-white q-mb-sm" label="Sign In" @click="validateLogin"/>
-            <q-btn unelevated size="md" flat color="accent" class="full-width" label="Sign Up"
-                   to="/register"/>
-          </q-card-actions>
-          <q-card-section class="text-center q-pa-sm">
-            <p class="text-grey-6">Forgot your password?</p>
-          </q-card-section>
-        </q-card>
+        </div>
+      </q-card-section>
+      <q-card-actions class="q-px-lg">
+        <q-btn unelevated size="lg" color="primary" class="full-width text-white q-mb-sm" label="Sign In"
+               @click="validateLogin"/>
+        <q-btn unelevated size="md" flat color="accent" class="full-width" label="Sign Up"
+               to="/register"/>
+      </q-card-actions>
+      <q-card-section class="text-center q-pa-sm">
+        <p class="text-grey-6">Forgot your password?</p>
+      </q-card-section>
+    </q-card>
 
 
   </q-page>
@@ -54,14 +56,15 @@
     name: 'Login',
     data() {
       return {
-        user:{
-          email:'',
-          password:''
+        urlLoginOauthGoogle: process.env.API_NODE + '/login/google',
+        user: {
+          email: '',
+          password: ''
         }
       }
     },
     methods: {
-      async validateLogin(){
+      async validateLogin() {
         const response = await this.$axiosNode.post('/login', this.user);
         localStorage.setItem('token', response.data.token);
         this.$router.push('/private')
