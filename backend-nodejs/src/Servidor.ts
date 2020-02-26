@@ -3,8 +3,8 @@ import { Server } from '@overnightjs/core';
 import { Logger } from '@overnightjs/logger';
 import { LoginController } from './controller/LoginController';
 import * as cors from 'cors';
-import * as dotEnv from 'dotenv';
-dotEnv.config();
+import * as passport from "passport";
+require('./config/enviroment');
 
 export class Servidor extends Server {
 
@@ -32,6 +32,12 @@ export class Servidor extends Server {
             maxAge: 3600
         };
         this.app.use(cors(options));
+
+
+        /*
+        * Passport
+        * */
+        this.app.use(passport.initialize());
 
 
 
