@@ -111,9 +111,7 @@ public class PostController {
     @Transactional
     public ResponseEntity<String> create(@RequestBody String json, HttpServletRequest request) {
 
-        System.out.println(json);
         Post post = postManager.fromJsonCreate(json);
-        System.out.println("ESTE ES EL POST: " + post);
         // Se comprueban que los campos obligatorios no estén vacios.
         if (post.getTituloOriginal() == null || post.getTituloTraducido() == null ||
                 post.getContenidoOriginal() == null || post.getContenidoTraducido() == null ||

@@ -51,6 +51,21 @@ public class UsuarioController {
         user.setPassword("");
         return user;
     }
+    @GetMapping("/p/me")
+    @Transactional
+    public Usuario getMySelf(HttpServletRequest request) {
+        /*
+         * Comprobamos que el usuario es el propietario del post
+         * */
+        String token = request.getHeader("Authorization");
+        token = token.replace("Bearer ", "");
+
+        Usuario user = tokenManager.getUsuariFromToken(token);
+        user.setPassword("");
+        return user;
+    }
+
+
 
     /*
      *
