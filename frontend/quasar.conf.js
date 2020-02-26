@@ -79,8 +79,10 @@ module.exports = function (ctx) {
         URL_API_TRANSCRIPT: JSON.stringify('http://server247.cfgs.esliceu.net/bloggeri18n/blogger.php'),
         API_TRANSTALATE_URL: JSON.stringify('http://server247.cfgs.esliceu.net/bloggeri18n/blogger.php')
       } : {
-        API_JAVA: 'IP_PRODUCCION', // TODO MODIFICAR CON IP ACTUAL
-        API_NODE: 'IP_PRODUCCION'
+        API_JAVA: 'IP_PRODUCCION', // TODO MODIFICAR CON IP ACTUAL EN PRODUCCION
+        API_NODE: 'IP_PRODUCCION',
+        URL_API_TRANSCRIPT: JSON.stringify('http://server247.cfgs.esliceu.net/bloggeri18n/blogger.php'),
+        API_TRANSTALATE_URL: JSON.stringify('http://server247.cfgs.esliceu.net/bloggeri18n/blogger.php')
       }
     },
 

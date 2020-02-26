@@ -14,12 +14,12 @@
       </q-card-section>
       <q-card-section>
         <q-form class="q-px-sm q-pt-xl">
-          <q-input square v-model="email" type="email" label="Email">
+          <q-input square v-model="user.email" type="email" label="Email">
             <template v-slot:prepend>
               <q-icon name="email"/>
             </template>
           </q-input>
-          <q-input square v-model="password" type="password" label="Password">
+          <q-input square v-model="user.password" type="password" label="Password">
             <template v-slot:prepend>
               <q-icon name="lock"/>
             </template>
@@ -36,7 +36,7 @@
             </div>
           </q-card-section>
           <q-card-actions class="q-px-lg">
-            <q-btn unelevated size="lg" color="primary" class="full-width text-white q-mb-sm" label="Sign In"/>
+            <q-btn unelevated size="lg" color="primary" class="full-width text-white q-mb-sm" label="Sign In" @click="validateLogin"/>
             <q-btn unelevated size="md" flat color="accent" class="full-width" label="Sign Up"
                    to="/register"/>
           </q-card-actions>
@@ -54,9 +54,17 @@
     name: 'Login',
     data() {
       return {
-        email: '',
-        username: '',
-        password: ''
+        user:{
+          email:'',
+          password:''
+        }
+      }
+    },
+    methods: {
+      async validateLogin(){
+        const response = await this.$axiosNode.post('/login', this.user);
+        localStorage.setItem('token', response.data.token);
+        this.$router.push('/private')
       }
     }
   }

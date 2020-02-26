@@ -1,31 +1,37 @@
-<template>
-  <q-page class="flex flex-center gradient-background">
-    <ul class="lista">
-      <li v-for="post in postsFiltered">
-        <q-card flat bordered class="post bg-white q-mb-sm">
+<template >
+  <q-page class=" gradient-background row flex-center">
+    <ul class="row col-6">
+      <li v-for="item in postsFiltered" class="col-6 q-pa-sm">
+        <q-card flat bordered class="my-card bg-grey-1 ">
           <q-card-section>
             <div class="row items-center no-wrap">
               <div class="col">
-                <div class="text-h6">{{ post.titulo }}</div>
-                <div class="text-subtitle2">{{ post.fecha }}</div>
+                <div class="text-h6">{{item.titulo}}</div>
+                <div class="text-subtitle2">{{item.fecha}}</div>
               </div>
 
+              <div class="col-auto">
+                  <q-btn color="grey-7"  flat label="Share" style=""/>
+              </div>
             </div>
           </q-card-section>
 
-          <q-card-section>
-            {{ post.contenido }}
+
+          <q-card-section class="overflow-auto">
+            {{item.contenido}}
           </q-card-section>
 
-          <q-separator/>
-          <!--Mostrar acciones solo en parte privada-->
-          <!--          <q-card-actions>-->
-          <!--            <q-btn flat>Action 1</q-btn>-->
-          <!--            <q-btn flat>Action 2</q-btn>-->
-          <!--          </q-card-actions>-->
+
         </q-card>
       </li>
     </ul>
+
+    <q-page-sticky position="top-right" :offset="[100, 18]">
+      <q-input standout="bg-teal text-white"    clearable
+               clear-icon="close" @click.stop="postsFiltered=allPosts" v-model="filtro" @input="filter" label="Filtrar posts" />
+    </q-page-sticky>
+
+
   </q-page>
 </template>
 
@@ -35,6 +41,7 @@
     name: "Posts",
     data() {
       return {
+        filtro:'',
         expanded: false,
         allPosts: [],
         postsFiltered: []
@@ -53,33 +60,34 @@
             contenido: post.contenidoTraducido
           })
         });
+        /*
+        * Invertimos los posts ya que nos vienen ordenados de antiguo a moderno
+        * */
+        this.allPosts = this.allPosts.reverse();
         this.postsFiltered = this.allPosts;
       }
     },
     methods: {
       filter() {
-
-        // TODO Implementar filtro
-
+        this.postsFiltered = this.allPosts.filter(post=>{
+          return post.titulo.toLowerCase().includes(this.filtro.toLowerCase()) || post.contenido.toLowerCase().includes(this.filtro.toLowerCase())
+        })
       }
     }
   }
 </script>
 
 <style scoped>
-  .lista {
-    min-width: 50%;
-    max-width: 50%;
-  }
 
-  .post {
-    min-width: 100%;
-  }
 
   .gradient-background {
     background: linear-gradient(to right bottom, #ffffff, #fbfbfb, #f6f6f6, #f2f2f2, #eeeeee);
   }
 
+  ul{
+    margin: 0;
+    padding:  0;
+  }
   ul li {
     list-style: none;
   }

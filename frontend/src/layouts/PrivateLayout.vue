@@ -103,7 +103,11 @@
 <script>
 
   export default {
-
+    async created() {
+      const data = await this.$axiosJava.get('/p/me');
+      console.log(data.data);
+      this.user.name = data.data.username;
+    },
     data() {
       return {
         confirmDisconnect: false,

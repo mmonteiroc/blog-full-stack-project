@@ -25,13 +25,13 @@
     <div class="q-pa-md q-gutter-sm row flex-center" style="width: 100%">
       <div class="editor-container">
         <q-input outlined v-model="editor.tituloOriginal" label="Titulo" class="q-mb-sm bg-white" @input="translate"/>
-        <q-editor v-model="editor.contenidoOriginal" class="editor-content" @input="translate"/>
+        <q-editor v-model="editor.contenidoOriginal" class="editor-content overflow-auto" @input="translate"/>
       </div>
 
 
       <q-card flat bordered class="editor-container">
         <q-input v-model="editor.tituloTraducido" readonly class="q-mb-sm q-pl-md q-pr-md"/>
-        <q-card-section v-html="editor.contenidoTraducido" class="editor-content"/>
+        <q-card-section v-html="editor.contenidoTraducido" class="editor-content overflow-auto"/>
       </q-card>
     </div>
 
@@ -100,17 +100,15 @@
 
 
         const response = await this.$axiosJava.get('/p/post/' + this.editor.idpost);
-        if (response.status === 404) {
-          // TODO redirect hacia el /private/posts
-        } else {
-          this.editor = response.data;
-          this.editor.idiomaTraduccion = {
-            code: response.data.idiomaTraducido
-          };
-          stringOptions.map(option => {
-            if (option.code === this.editor.idiomaTraduccion.code) this.editor.idiomaTraduccion.label = option.label
-          })
-        }
+
+        this.editor = response.data;
+        this.editor.idiomaTraduccion = {
+          code: response.data.idiomaTraducido
+        };
+        stringOptions.map(option => {
+          if (option.code === this.editor.idiomaTraduccion.code) this.editor.idiomaTraduccion.label = option.label
+        })
+
 
       }
     },
@@ -144,7 +142,6 @@
 
         /*
         * TODO mirar como hacer abort para los translate.
-        * TODO mirar como hacer las peticiones con AXIOS.
         * */
 
 
@@ -211,18 +208,19 @@
         }
 
         this.$refs.bar.stop();
-
+        this.$q.notify({
+          color: 'primary',
+          textColor: 'black',
+          message: 'El post se ha guardado correctamente',
+          position: 'center',
+          avatar: 'https://cdn.quasar.dev/img/boy-avatar.png',
+          multiLine: 'true',
+          timeout: 5000
+        })
       },
       async record() {
-        /*
-        * TODO la grabacion de audio + recibimiento
-        * */
 
         if (this.recording) {
-          /*
-          * Parar de grabar.
-          * TODO Mirar si se traducen automaticamente.
-          * */
 
           this.voiceRecorder.stop();
           this.voiceRecordStream.getTracks().forEach(function (track) {
