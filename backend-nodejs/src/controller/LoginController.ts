@@ -4,6 +4,7 @@ import {Request, Response} from 'express';
 import {Logger} from '@overnightjs/logger';
 import * as passport from "passport";
 import * as jwt from 'jsonwebtoken';
+import {Usuario} from "../model/Usuario";
 
 require('../config/passport');
 require('../config/enviroment');
@@ -54,17 +55,21 @@ export class LoginController {
     }))
     private async success(req: Request, res: Response) {
         console.log("GOOGLE HA IDO BIEN");
-        const usuario = req.user;
+        const usuario =<Usuario> req.user;
+        const user = {
+          email: usuario.email,
+          username: usuario.username,
+          idusuario: usuario.idusuario
+        };
 
-        const user:string =<string> usuario;
-
-
-        const token = jwt.sign(user, process.env.JWT_SECRET || '', {
+        const stringUser:string =<string><unknown>user;
+        const token = jwt.sign(stringUser, process.env.JWT_SECRET || '', {
             expiresIn: '1d',
-            subject: 1 + "" // CAST TO STRING
+            subject: 1+""// CAST TO STRING
         });
+        res.redirect(process.env.FRONTEND_URL + '/?access_token=' + token + '#/login/callback');
 
-        res.redirect(process.env.FRONTEND_URL + '/?access_token=' + token+'#/login/callback');
+
     }
 
     @Get('gg/failure')
