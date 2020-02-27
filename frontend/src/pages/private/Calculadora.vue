@@ -378,8 +378,8 @@
         foodTable.delete(food.nombre);
       },
       async getFoodInfo(foodName) {
-        const APP_ID = "f8c6bbf3";
-        const API_KEY = "09beb6c98488ceda8d4fbdcaa31557f1";
+        const APP_ID = process.env.API_ID_COMIDA;
+        const API_KEY = process.env.API_KEY_COMIDA;
         console.log("API SEARCH OF: ", foodName);
 
 

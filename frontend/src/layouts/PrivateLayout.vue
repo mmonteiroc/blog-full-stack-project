@@ -122,6 +122,12 @@
         },
         linksMenu: [
           {
+            title: 'Dashboard',
+            caption: '',
+            icon: 'fas fa-tachometer-alt',
+            link: '/private/dashboard'
+          },
+          {
             title: 'Posts',
             caption: 'Acceder a tus posts',
             icon: 'desktop_windows',
@@ -138,11 +144,6 @@
             caption: 'Calculadora de calorias ',
             icon: 'keyboard',
             link: '/private/calculadora'
-          },
-          {
-            title: 'Disconect',
-            icon: 'highlight_off',
-            link: '/logout'
           }
         ]
       }

@@ -49,7 +49,8 @@ module.exports = function (ctx) {
 
       // Quasar plugins
       plugins: [
-        'Notify'
+        'Notify',
+        'Dialog'
       ],
       config: {
         notify: { /* Notify defaults */}
@@ -77,12 +78,16 @@ module.exports = function (ctx) {
         API_JAVA: JSON.stringify('http://localhost:8080'),
         API_NODE: JSON.stringify('http://localhost:3000'),
         URL_API_TRANSCRIPT: JSON.stringify('http://server247.cfgs.esliceu.net/bloggeri18n/blogger.php'),
-        API_TRANSTALATE_URL: JSON.stringify('http://server247.cfgs.esliceu.net/bloggeri18n/blogger.php')
+        API_TRANSTALATE_URL: JSON.stringify('http://server247.cfgs.esliceu.net/bloggeri18n/blogger.php'),
+        API_KEY_COMIDA: JSON.stringify('09beb6c98488ceda8d4fbdcaa31557f1'),
+        API_ID_COMIDA: JSON.stringify('f8c6bbf3')
       } : {
         API_JAVA: 'IP_PRODUCCION', // TODO MODIFICAR CON IP ACTUAL EN PRODUCCION
         API_NODE: 'IP_PRODUCCION',
         URL_API_TRANSCRIPT: JSON.stringify('http://server247.cfgs.esliceu.net/bloggeri18n/blogger.php'),
-        API_TRANSTALATE_URL: JSON.stringify('http://server247.cfgs.esliceu.net/bloggeri18n/blogger.php')
+        API_TRANSTALATE_URL: JSON.stringify('http://server247.cfgs.esliceu.net/bloggeri18n/blogger.php'),
+        API_KEY_COMIDA: JSON.stringify('09beb6c98488ceda8d4fbdcaa31557f1'),
+        API_ID_COMIDA: JSON.stringify('f8c6bbf3')
       }
     },
 

@@ -10,6 +10,8 @@ const routes = [
       path: '/private',
       component: () => import('layouts/PrivateLayout.vue'),
       children: [
+        {path: "", redirect: 'dashboard'},
+        {path: "dashboard", component: () => import('pages/private/Dashboard.vue')},
         {path: "posts", component: () => import('pages/private/Posts.vue')},
         {path: "create", component: () => import('pages/private/Form.vue')},
         {path: "update/:id", component: () => import('pages/private/Form.vue')},

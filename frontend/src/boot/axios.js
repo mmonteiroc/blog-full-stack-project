@@ -31,10 +31,26 @@ export default async ({Vue, router}) => {
   }, async function (error) {
 
     if (error.response.status === 401) {
-      router.push('/login')
+       // UNAUTORIZED, token no valido o token caducado.
+
+      /*
+      * Step 1- Intentar renovar token
+      * */
+
+      /*
+      * Step 2 - Si renovamos token, intentar hacer la peticion otra vez
+      * */
+
+      /*
+      * Step 3 - Si no nos renueva el token, mandar a login otra vez
+      * */
     }
     if (error.response.status === 404){
       router.push('/')
+    }
+    if (error.response.status === 403){
+      // FORBIDEN - NO tienes permisos loggeate con usuario que si tenga permisos
+      router.push('/login')
     }
 
 

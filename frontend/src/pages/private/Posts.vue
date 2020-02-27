@@ -1,7 +1,7 @@
 <template>
   <q-page class=" gradient-background row flex-center">
-    <ul class="row col-6">
-      <li v-for="item in postsFiltered" class="col-6 q-pa-sm">
+    <ul class="row col-12 col-md-6 flex-center">
+      <li v-for="item in postsFiltered" class="col-12 col-md-6 col-sm-8 q-pa-sm">
         <q-card flat bordered class="my-card bg-grey-1 ">
           <q-card-section>
             <div class="row items-center no-wrap">
@@ -24,7 +24,7 @@
 
           <q-card-actions align="right">
             <q-btn flat :to="item.urlUpdate">Update</q-btn>
-            <q-btn flat color="accent" @click="remove(item)">Delete
+            <q-btn flat color="accent" @click="confirmRemove(item)">Delete
               <q-icon name="delete"/>
             </q-btn>
           </q-card-actions>
@@ -81,6 +81,16 @@
       filter() {
         this.postsFiltered = this.allPosts.filter(post => {
           return post.titulo.toLowerCase().includes(this.filtro.toLowerCase()) || post.contenido.toLowerCase().includes(this.filtro.toLowerCase())
+        })
+      },
+      confirmRemove(post){
+        this.$q.dialog({
+          title: '¿Seguro?',
+          message: 'Estas seguro de borrar este post?',
+          cancel: true,
+          persistent: true
+        }).onOk(() => {
+          this.remove(post)
         })
       },
       async remove(post) {
