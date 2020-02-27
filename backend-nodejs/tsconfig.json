@@ -13,7 +13,8 @@
     "noImplicitAny": true,
     "removeComments": true,
     "strict": true,
-    "target": "es5",
+    "target": "es6",
+    // or a more recent ecmascript version
     "sourceMap": true,
     "outDir": "dist",
     "types": [

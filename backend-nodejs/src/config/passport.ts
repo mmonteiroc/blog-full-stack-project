@@ -3,7 +3,8 @@
 * */
 import * as passport from "passport";
 import * as passportGoogle from 'passport-google-oauth2';
-import {Usuario} from '../model/Usuario';
+import {UsuarioService} from "../service/usuarioService";
+import {Usuario} from "../model/Usuario";
 
 require('./enviroment');
 
@@ -12,11 +13,11 @@ require('./enviroment');
 * */
 const GoogleStrategy = passportGoogle.Strategy;
 
-passport.serializeUser(function(user, done) {
+passport.serializeUser(function (user, done) {
     done(null, user);
 });
 
-passport.deserializeUser(function(user, done) {
+passport.deserializeUser(function (user, done) {
     done(null, user);
 });
 
@@ -30,23 +31,41 @@ passport.use(new GoogleStrategy(
         callbackURL: process.env.GOOGLE_CALLBACK_URL || '',
         passReqToCallback: true
     },
-    async function (request:any,accessToken:string, refreshToken:string, profile:any,done:any) {
+    async function (request: any, accessToken: string, refreshToken: string, profile: any, done: any) {
 
-        const emailsAvaiable = profile.emails.map((email:any)=>{
-            if (email.verified || profile.email_verified){
-                return email.value;
-            }
-        });
 
         /*
         * TODO buscar en DDBB y si no existe crear nuevo usuario
         * */
+        const email = profile.email;
+        let result;
+        const usuarioService = new UsuarioService();
+        result = <any>await usuarioService.findByEmail(email);
 
-        // PLACE HOLDER, este usuario nos ha de venir de la BBDD
-        const user = new Usuario(1, profile.name.givenName,profile.email,'',profile.name.givenName,profile.name.familyName,"google");
+        if (result === null) {
+            /*
+            * Usuario no encontrado
+            * Creamos nuevo usuario
+            * Lo buscamos y lo devolvemos
+            * el controlador creara el token para dicho usuario
+            * */
 
+            await usuarioService.createUser({
+                nombre: profile.given_name,
+                email: profile.email,
+                username: profile.display_name || profile.given_name || 'Modifica tu username',
+                password: '',
+                authMode: 'google',
+                apellidos: profile.family_name
+            });
+            result = <any>await usuarioService.findByEmail(email);
+        }
+
+
+        const user = result.dataValues;
 
         // PREGUNTAR POR QUE ESTE NULL DEBERIA SER UN ERR
-        done(null,user);
+        done(null, user);
     }
-));
+))
+;
