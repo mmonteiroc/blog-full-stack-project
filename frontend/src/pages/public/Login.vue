@@ -3,7 +3,7 @@
     class="window-height window-width row justify-center items-center bg-grey-3"
   >
 
-    <q-card class="shadow-4 q-pb-sm col-11 col-sm-3">
+    <q-card class="shadow-4 q-pb-sm col-11 col-sm-8 col-md-5 col-lg-3">
       <q-card-section class="bg-deep-purple-7">
         <h4 class="text-h5 text-white q-my-md">Sign In</h4>
         <div class="absolute-bottom-right q-pr-md" style="transform: translateY(50%);">
@@ -65,9 +65,21 @@
     },
     methods: {
       async validateLogin() {
-        const response = await this.$axiosNode.post('/login', this.user);
-        localStorage.setItem('token', response.data.token);
-        this.$router.push('/private')
+        const response = await this.$axiosNode.post('/login/local', this.user).catch(x=>{
+          // Aqui solo entrara si ha habido un error durante el post (EX 401)
+          this.$q.notify({
+            color: 'accent',
+            textColor: 'white',
+            message: 'Ha habido un error durante la validacion',
+            position: 'bottom',
+            multiLine: 'true',
+            timeout: 3000
+          })
+        });
+        // Solo continuara este flujo si el axios ha ido bien
+        console.log('RESPONSE', response);
+        localStorage.setItem('access_token', response.data.access_token);
+        await this.$router.push('/private')
       }
     }
   }

@@ -1,45 +1,66 @@
-import {OK} from 'http-status-codes';
-import {Controller, Delete, Get, Middleware, Post, Put} from '@overnightjs/core';
+import {OK, UNAUTHORIZED, BAD_REQUEST, FORBIDDEN} from 'http-status-codes';
+import {Controller, Get, Middleware, Post} from '@overnightjs/core';
 import {Request, Response} from 'express';
-import {Logger} from '@overnightjs/logger';
 import * as passport from "passport";
 import * as jwt from 'jsonwebtoken';
 import {Usuario} from "../model/Usuario";
+import {UsuarioService} from "../service/usuarioService";
 
 require('../config/passport');
 require('../config/enviroment');
 
 @Controller('login')
 export class LoginController {
+    
 
-    @Post()
-    private validateLogin(req: Request, res: Response) {
-        Logger.Info(req.body, true);
-        return res.status(OK).json({
-            /*
-            * TODO --> validar que el usuario que recibimos es quien
-            *  dice ser y crear un token que enviar (NO DE MANERA ESTATICA)
-            * */
-            token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZHVzdWFyaW8iOjEsInN1YiI6IjEyMzQ1Njc4OTAiLCJuYW1lIjoiSm9obiBEb2UiLCJpYXQiOjE1MTYyMzkwMjJ9.xoNb_whYqKTtT5BJWF0NMWg1WXztGcxwdprV7clhpx4'
-        });
+
+
+    /*
+    * Placeholder login local ---
+    * TODO hablar con joan y preguntarle tema de
+    *  como hacer con passport y si se
+    * puede ya que hacemos api rest
+    * */
+    @Post('local')
+    private async loginLocal(req:Request, res:Response){
+        /*
+        * TODO-> get data pasada con el axios
+        *  llamar a validar ese usuario al service
+        * */
+        const service = new UsuarioService();
+        const userToValidate = {
+            email: req.body.email,
+            password: req.body.password,
+            authMode: 'local'
+        };
+
+        const result = await service.validateUser(userToValidate);
+
+        if (result){
+            // Validado
+            const usuarioValidado = await service.findByEmail(userToValidate.email);
+            const token  = LoginController.tokenGenerator(usuarioValidado.dataValues);
+            return res.status(OK).json({
+                access_token: token
+            })
+
+        }else {
+            // No validado
+            return res.status(UNAUTHORIZED).send('Datos de login no validos');
+        }
+
     }
 
-    @Put('update-user')
-    private update(req: Request, res: Response) {
-        Logger.Info(req.body);
-        return res.status(OK).json({
-            message: 'update_called',
-        });
-    }
 
-    @Delete('delete/:id')
-    private delete(req: Request, res: Response) {
-        Logger.Info(req.params, true);
-        return res.status(OK).json({
-            message: 'delete_called',
-        });
-    }
 
+    /*
+    * -----------------------------------
+    *
+    *   Metodos relacionados con Oauth
+    *   de GOOGLE
+    *
+    * -----------------------------------
+    * */
     @Get('google')
     @Middleware(passport.authenticate('google', {scope: ['email', 'profile']}))
     private async loginGoogle(req: Request, res: Response) {
@@ -62,11 +83,7 @@ export class LoginController {
           idusuario: usuario.idusuario
         };
 
-        const stringUser:string =<string><unknown>user;
-        const token = jwt.sign(stringUser, process.env.JWT_SECRET || '', {
-            expiresIn: '1d',
-            subject: 1+""// CAST TO STRING
-        });
+        const token = LoginController.tokenGenerator(user);
         res.redirect(process.env.FRONTEND_URL + '/?access_token=' + token + '#/login/callback');
 
 
@@ -77,5 +94,14 @@ export class LoginController {
         console.log("GOOGLE HA IDO MUY MAL");
         console.log("REQUEST USER:", req);
         res.end()
+    }
+
+
+    private static tokenGenerator(user:any){
+        const stringUser:string =<string><unknown>user;
+        return jwt.sign(stringUser, process.env.JWT_SECRET || '', {
+            expiresIn: '1d',
+            subject: user.idusuario + ""// CAST TO STRING
+        });
     }
 }
