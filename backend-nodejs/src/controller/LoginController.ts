@@ -91,9 +91,7 @@ export class LoginController {
 
     @Get('gg/failure')
     private async failure(req: Request, res: Response) {
-        console.log("GOOGLE HA IDO MUY MAL");
-        console.log("REQUEST USER:", req);
-        res.end()
+        res.redirect(process.env.FRONTEND_URL + '/#/login/');
     }
 
 
