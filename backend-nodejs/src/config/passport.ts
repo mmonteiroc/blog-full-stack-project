@@ -34,9 +34,6 @@ passport.use(new GoogleStrategy(
     async function (request: any, accessToken: string, refreshToken: string, profile: any, done: any) {
 
 
-        /*
-        * TODO buscar en DDBB y si no existe crear nuevo usuario
-        * */
         const email = profile.email;
         let result;
         const usuarioService = new UsuarioService();

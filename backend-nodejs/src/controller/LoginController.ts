@@ -19,7 +19,7 @@ export class LoginController {
     * Placeholder login local ---
     * TODO hablar con joan y preguntarle tema de
     *  como hacer con passport y si se
-    * puede ya que hacemos api rest
+    *  puede ya que hacemos api rest
     * */
     @Post('local')
     private async loginLocal(req:Request, res:Response){
