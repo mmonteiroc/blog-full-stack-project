@@ -1,7 +1,8 @@
 import * as bodyParser from 'body-parser';
 import { Server } from '@overnightjs/core';
 import { Logger } from '@overnightjs/logger';
-import { LoginController } from './controller/LoginController';
+import {LoginController} from './controller/LoginController';
+import {UsuarioController} from "./controller/UsuarioController";
 import * as cors from 'cors';
 import * as passport from "passport";
 require('./config/enviroment');
@@ -45,8 +46,9 @@ export class Servidor extends Server {
     }
 
     private setupControllers(): void {
-        const userController = new LoginController();
-        super.addControllers([userController]/*, optional router here*/);
+        const loginController = new LoginController();
+        const userController = new UsuarioController();
+        super.addControllers([userController, loginController]/*, optional router here*/);
     }
 
     public start(port: number): void {

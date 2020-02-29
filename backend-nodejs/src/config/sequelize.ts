@@ -1,16 +1,11 @@
 import {Sequelize as MySequalize} from 'sequelize-typescript';
-import {Usuario} from "../model/Usuario";
+require('./enviroment');
 
-
-/*
-* PLACEHOLDER
-* TODO-> añadir en el .env
-* */
 export const sequelize = new MySequalize({
     repositoryMode: true,
-    database: 'PRACTICA_GLOBAL',
+    database: process.env.DATABASE_NAME,
     dialect: "mysql", // NO PUEDE VENIR DEL PROPERTIES YA QUE ES UN ENUM Y SI NO PETA
-    username: 'monteiro',
-    password: 'monteiro',
+    username: process.env.DATABASE_USER,
+    password: process.env.DATABASE_PASSWD,
     models: [__dirname + '/../model/']
 });
