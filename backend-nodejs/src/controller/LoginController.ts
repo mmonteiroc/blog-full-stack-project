@@ -79,8 +79,8 @@ export class LoginController {
         const usuario =<Usuario> req.user;
         const user = {
           email: usuario.email,
-          username: usuario.username,
-          idusuario: usuario.idusuario
+            username: usuario.username,
+            idusuario: usuario.idusuario
         };
 
         const token = LoginController.tokenGenerator(user);
@@ -89,14 +89,22 @@ export class LoginController {
 
     }
 
+
+    /*
+    *
+    * TODO -- Mirar como enviar un error en este
+    *  caso al cliente diciendole que puede
+    *  que esta cuenta ya se user para login local o que google
+    *  no ha podido verificar su identidad
+    * */
     @Get('gg/failure')
     private async failure(req: Request, res: Response) {
         res.redirect(process.env.FRONTEND_URL + '/#/login/');
     }
 
 
-    private static tokenGenerator(user:any){
-        const stringUser:string =<string><unknown>user;
+    private static tokenGenerator(user: any) {
+        const stringUser: string = <string><unknown>user;
         return jwt.sign(stringUser, process.env.JWT_SECRET || '', {
             expiresIn: '1d',
             subject: user.idusuario + ""// CAST TO STRING
