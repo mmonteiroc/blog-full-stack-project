@@ -19,10 +19,7 @@ export class LoginController {
     * */
     @Post('local')
     private async loginLocal(req:Request, res:Response){
-        /*
-        * TODO-> get data pasada con el axios
-        *  llamar a validar ese usuario al service
-        * */
+
         const service = new UsuarioService();
         const userToValidate = {
             email: req.body.email,
