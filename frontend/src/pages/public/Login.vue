@@ -65,21 +65,25 @@
     },
     methods: {
       async validateLogin() {
-        const response = await this.$axiosNode.post('/login/local', this.user).catch(x=>{
-          // Aqui solo entrara si ha habido un error durante el post (EX 401)
+        const response = await this.$axiosNode.post('/login/local', this.user);
+        console.log('RESPONSE', response);
+
+        if (response.status!==200){
           this.$q.notify({
             color: 'accent',
             textColor: 'white',
-            message: 'Ha habido un error durante la validacion',
+            message: response.statusText,
             position: 'bottom',
             multiLine: 'true',
             timeout: 3000
           })
-        });
-        // Solo continuara este flujo si el axios ha ido bien
-        console.log('RESPONSE', response);
-        localStorage.setItem('access_token', response.data.access_token);
-        await this.$router.push('/private')
+        }else {
+          // Solo continuara este flujo si el axios ha ido bien
+          localStorage.setItem('access_token', response.data.access_token);
+          localStorage.setItem('refresh_token', response.data.refresh_token);
+          await this.$router.push('/private')
+        }
+
       }
     }
   }

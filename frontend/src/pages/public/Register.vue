@@ -49,7 +49,7 @@
               </q-card-section>
 
               <q-card-actions class="q-px-lg">
-                <q-btn size="lg" color="primary" class=" text-white q-mb-sm button-action full-width" label="Register !" @click="saveUser"/>
+                <q-btn size="lg" color="primary" outline class="  q-mb-sm button-action full-width" label="Sign Up" @click="saveUser"/>
                 <q-btn unelevated size="md" flat color="accent" class=" q-mb-sm  full-width"
                        label="Sign In" to="/login"/>
 
@@ -66,11 +66,11 @@
     data() {
       return {
         person: {
-          email: '',
-          password: '',
-          username: '',
-          name: '',
-          surname: ''
+          email: null,
+          password: null,
+          username: null,
+          name: null,
+          surname: null
         }
       }
     },
@@ -78,7 +78,17 @@
       async saveUser(){
 
         const response = await this.$axiosNode.post('/user',this.person);
-        console.log(response)
+        if (response.status!==200){
+          this.$q.notify({
+            color: 'negative',
+            textColor: 'white',
+            message: response.statusText,
+            position: 'center',
+            multiLine: 'true',
+            timeout: 3000
+          })
+        }
+
       }
     }
   }

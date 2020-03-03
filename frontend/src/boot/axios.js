@@ -19,6 +19,7 @@ export default async ({Vue, router}) => {
     config.withCredentials = true;
 
     const token = localStorage.getItem('access_token');
+
     config.headers.Authorization = `Bearer ${token}`;
 
     return config;
@@ -36,14 +37,24 @@ export default async ({Vue, router}) => {
       /*
       * Step 1- Intentar renovar token
       * */
+      const resultado = await instanceNodeJS.post('/login/refresh');
+      const newToken = resultado.data.access_token;
 
-      /*
-      * Step 2 - Si renovamos token, intentar hacer la peticion otra vez
-      * */
 
-      /*
-      * Step 3 - Si no nos renueva el token, mandar a login otra vez
-      * */
+      if (newToken !==null && newToken){
+        /*
+        * Step 2 - Si renovamos token, intentar hacer la peticion otra vez
+        * */
+        localStorage.setItem("access_token", newToken);
+        return instanceJava(error.config);
+
+      }else {
+        /*
+        * Step 3 - Si no nos renueva el token, mandar a login otra vez
+        * */
+        router.push('/login');
+      }
+
     }
     if (error.response.status === 404){
       router.push('/')
@@ -54,8 +65,28 @@ export default async ({Vue, router}) => {
     }
 
 
-    return Promise.reject(error.response);
+    return Promise.reject(error);
   });
+
+
+  instanceNodeJS.interceptors.request.use(function (config) {
+    config.withCredentials = true;
+
+    const refresh = localStorage.getItem('refresh_token');
+    config.headers.Authorization = `${refresh}`;
+
+    return config;
+  }, function (error) {
+    return Promise.reject(error);
+  });
+
+
+  instanceNodeJS.interceptors.response.use(function (response) {
+    return response;
+  }, async function (error) {
+
+    return error.response;
+  })
 }
 
 
