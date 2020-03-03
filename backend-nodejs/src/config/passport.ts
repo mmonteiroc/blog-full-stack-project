@@ -3,6 +3,7 @@
 * */
 import * as passport from "passport";
 import * as passportGoogle from 'passport-google-oauth2';
+import * as passportLocal from 'passport-local';
 import {UsuarioService} from "../service/usuarioService";
 import {Usuario} from "../model/Usuario";
 
@@ -12,6 +13,7 @@ require('./enviroment');
 * Estrategias
 * */
 const GoogleStrategy = passportGoogle.Strategy;
+const LocalStrategy = passportLocal.Strategy;
 
 passport.serializeUser(function (user, done) {
     done(null, user);
@@ -60,13 +62,12 @@ passport.use(new GoogleStrategy(
 
 
         const user = result.dataValues;
-        if (user.authMode != 'google'){
+        if (user.authMode != 'google') {
             done(null, false) // Enviar al cb de failure
-        }else {
+        } else {
             // TODO - PREGUNTAR POR QUE ESTE NULL DEBERIA SER UN ERR
             done(null, user);
         }
 
     }
-))
-;
+));
