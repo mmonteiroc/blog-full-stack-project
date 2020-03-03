@@ -1,5 +1,7 @@
 package com.esliceu.proyectoglobal.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.List;
 import java.util.Objects;
@@ -26,6 +28,7 @@ public class Usuario {
     @Column(name = "email", length = 100, nullable = false, unique = true)
     private String email;
 
+    @JsonIgnore
     @Column(name = "password", length = 300, nullable = false)
     private String password;
 

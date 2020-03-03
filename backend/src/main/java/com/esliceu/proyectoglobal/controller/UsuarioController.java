@@ -35,11 +35,6 @@ public class UsuarioController {
     public List<Usuario> getAll() {
 
         List<Usuario> users = usuarioManager.findAll();
-        for (Usuario user : users) {
-
-            // BORRAMOS LAS PASSWORDS ANTES DE RETORNAR EL OBJETO USUARIO AL CLIENTE
-            user.setPassword("");
-        }
 
         return usuarioManager.findAll();
     }
@@ -61,7 +56,6 @@ public class UsuarioController {
         token = token.replace("Bearer ", "");
 
         Usuario user = tokenManager.getUsuariFromToken(token);
-        user.setPassword("");
         return user;
     }
 
