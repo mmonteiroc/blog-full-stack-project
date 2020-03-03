@@ -21,7 +21,6 @@ export class UsuarioController {
             apellidos: req.body.surname, // PUEDE SER NULL
         };
 
-        console.log(user);
 
         /*
         * NO OK no hemos recibido todos los parametros obligatorios
@@ -33,10 +32,7 @@ export class UsuarioController {
             || user.password == null || user.password === ''
             || user.username == null || user.username === ''
             || user.nombre == null || user.nombre === '') {
-            /*
-            * Lanzar en el response el 400 + el 'mensaje' de error
-            * TODO - preguntar si el mensaje de error es correcto mandarlo así
-            * */
+
             res.status(BAD_REQUEST).statusMessage = 'No se han recibido los parametros obligatorios';
             res.end();
         }

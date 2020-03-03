@@ -1,4 +1,4 @@
-import {OK, UNAUTHORIZED, BAD_REQUEST, FORBIDDEN} from 'http-status-codes';
+import {BAD_REQUEST, OK, UNAUTHORIZED} from 'http-status-codes';
 import {Controller, Get, Middleware, Post} from '@overnightjs/core';
 import {Request, Response} from 'express';
 import * as passport from "passport";
@@ -11,15 +11,11 @@ require('../config/enviroment');
 
 @Controller('login')
 export class LoginController {
-    
-
 
 
     /*
     * Placeholder login local ---
-    * TODO hablar con joan y preguntarle tema de
-    *  como hacer con passport y si se
-    *  puede ya que hacemos api rest
+    * TODO hacer con passport
     * */
     @Post('local')
     private async loginLocal(req:Request, res:Response){
@@ -56,10 +52,6 @@ export class LoginController {
     }
 
 
-    /*
-    * TODO -- Mirar que el usuario existe en la BBDD sino, enviar error
-    *  Mirar que si el token refresh no valida dar errror
-    * */
     @Post('refresh')
     private async refreshToken(req: Request, res: Response) {
         /*
@@ -127,7 +119,6 @@ export class LoginController {
         failureRedirect: '/login/gg/failure'
     }))
     private async success(req: Request, res: Response) {
-        console.log("GOOGLE HA IDO BIEN");
         const usuario =<Usuario> req.user;
         const user = {
           email: usuario.email,

@@ -51,7 +51,6 @@ export class UsuarioService {
         const validacionPassword = await encriptador.compare(usuarioToCheck.password, user.password);
 
 
-        console.log("USUARIOS ANTES DE RESULTADO 1:", user);
         return validacionPassword && user.authMode === usuarioToCheck.authMode;
     }
 

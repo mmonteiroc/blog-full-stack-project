@@ -27,8 +27,5 @@ export class UsuarioRepository {
     async create(usuario: any) {
 
         const lucas = await this.repo.create(usuario);
-
-        console.log("LUCAS ES: ", lucas)
-
     }
 }
