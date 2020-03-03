@@ -116,12 +116,15 @@ export class LoginController {
         failureRedirect: '/login/gg/failure'
     }))
     private async success(req: Request, res: Response) {
-        const usuario =<Usuario> req.user;
+        const usuario = <Usuario>req.user;
         const user = {
-          email: usuario.email,
+            email: usuario.email,
             username: usuario.username,
             idusuario: usuario.idusuario
         };
+        /*
+        * TODO - ENVIAR REFRESH TOKEN TAMBIEN
+        * */
 
         const token = LoginController.tokenGenerator(user);
         res.redirect(process.env.FRONTEND_URL + '/?access_token=' + token + '#/login/callback');

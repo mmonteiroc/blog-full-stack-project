@@ -87,6 +87,10 @@
             multiLine: 'true',
             timeout: 3000
           })
+        }else if (response.status === 200){
+          /*
+          * TODO Redirect dashboard privado + añadir el token del usuario que acabas  de crear
+          * */
         }
 
       }
