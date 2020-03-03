@@ -33,30 +33,22 @@ public class UsuarioController {
     @GetMapping("/p/user")
     @Transactional
     public List<Usuario> getAll() {
-
-        List<Usuario> users = usuarioManager.findAll();
-
         return usuarioManager.findAll();
     }
 
     @GetMapping("/p/user/{id}")
     @Transactional
     public Usuario get(@PathVariable("id") Long id) {
-        Usuario user = usuarioManager.findById(id);
-        user.setPassword("");
-        return user;
+        return usuarioManager.findById(id);
     }
     @GetMapping("/p/me")
     @Transactional
     public Usuario getMySelf(HttpServletRequest request) {
-        /*
-         * Comprobamos que el usuario es el propietario del post
-         * */
+
         String token = request.getHeader("Authorization");
         token = token.replace("Bearer ", "");
 
-        Usuario user = tokenManager.getUsuariFromToken(token);
-        return user;
+        return tokenManager.getUsuariFromToken(token);
     }
 
 
