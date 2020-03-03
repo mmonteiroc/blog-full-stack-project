@@ -63,7 +63,7 @@ passport.use(new GoogleStrategy(
         if (user.authMode != 'google'){
             done(null, false) // Enviar al cb de failure
         }else {
-            // PREGUNTAR POR QUE ESTE NULL DEBERIA SER UN ERR
+            // TODO - PREGUNTAR POR QUE ESTE NULL DEBERIA SER UN ERR
             done(null, user);
         }
 

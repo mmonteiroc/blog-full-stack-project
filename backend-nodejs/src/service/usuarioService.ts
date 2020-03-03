@@ -25,7 +25,7 @@ export class UsuarioService {
         * */
 
         const password = usuario.password;
-        const saltRounds = 10; // TODO preguntar que es esto de salt rounds
+        const saltRounds = 10;
 
         usuario.password = await encriptador.hash(password, saltRounds);
         await this.repo.create(usuario)
