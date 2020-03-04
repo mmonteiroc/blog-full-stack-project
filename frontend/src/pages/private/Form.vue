@@ -140,10 +140,6 @@
 
         if (this.editor.idiomaTraduccion === null) this.editor.idiomaTraduccion = this.options[0];
 
-        /*
-        * TODO mirar como hacer abort para los translate.
-        * */
-
 
         const promesas = [];
         // titulo

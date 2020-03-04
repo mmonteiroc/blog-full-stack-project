@@ -34,7 +34,6 @@ public class TokenFilter implements HandlerInterceptor {
                 response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
                 return false;
             } else {
-                response.setStatus(HttpServletResponse.SC_OK);
                 return true;
             }
         }
