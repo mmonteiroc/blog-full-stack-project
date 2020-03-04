@@ -34,5 +34,8 @@ public class UsuarioManager {
     public Usuario findById(Long id) {
         return usuarioRepository.findByIdusuario(id);
     }
+    public void update(Usuario user) {
+         usuarioRepository.save(user);
+    }
 
 }
