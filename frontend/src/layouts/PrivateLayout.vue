@@ -48,7 +48,7 @@
           </div>
           <q-separator class="q-mt-sm q-mb-sm"/>
           <div class="row flex-center justify-evenly q-mb-sm">
-            <q-btn flat icon="person" color="primary">
+            <q-btn flat icon="person" color="primary" to="/private/account">
               <q-tooltip content-class="bg-indigo" :delay="300" :offset="[10, 10]">
                 Account
               </q-tooltip>
@@ -105,7 +105,6 @@
   export default {
     async created() {
       const data = await this.$axiosJava.get('/p/me');
-      console.log(data.data);
       this.user.name = data.data.username;
 
     },
@@ -153,7 +152,8 @@
         this.$q.dark.toggle();
       },
       disconnect(){
-        localStorage.removeItem('access_token')
+        localStorage.removeItem('access_token');
+        localStorage.removeItem('refresh_token');
       }
     }
   }

@@ -16,6 +16,7 @@ const routes = [
         {path: "create", component: () => import('pages/private/Form.vue')},
         {path: "update/:id", component: () => import('pages/private/Form.vue')},
         {path: "calculadora", component: () => import('pages/private/Calculadora.vue')},
+        {path: "account", component: () => import('pages/private/Account.vue')},
       ],
       beforeEnter: (to, from, next) => {
         const token = localStorage.getItem('access_token');
@@ -38,6 +39,7 @@ const routes = [
               beforeEnter: (to, from, next) => {
                 const url = new URL(location);
                 const access_token = url.searchParams.get('access_token');
+                const refresh_token = url.searchParams.get('refresh_token');
                 /*
                 * Get refresh
                 * */
@@ -46,13 +48,12 @@ const routes = [
                 * Save tokens
                 * */
                 localStorage.setItem('access_token', access_token);
+                localStorage.setItem('refresh_token', refresh_token);
 
                 /*
                 * Limpiar url de params
                 * */
-
                 /*
-                * TODO-> mirar como hacer esto sin window.....
                 *
                 * Esto es un placeholder hasta encontrar la manera correcta
                 * */
@@ -79,3 +80,4 @@ if (process.env.MODE !== 'ssr') {
 }
 
 export default routes
+

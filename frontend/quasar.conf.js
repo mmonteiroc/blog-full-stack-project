@@ -82,7 +82,7 @@ module.exports = function (ctx) {
         API_KEY_COMIDA: JSON.stringify('09beb6c98488ceda8d4fbdcaa31557f1'),
         API_ID_COMIDA: JSON.stringify('f8c6bbf3')
       } : {
-        API_JAVA: 'IP_PRODUCCION', // TODO MODIFICAR CON IP ACTUAL EN PRODUCCION
+        API_JAVA: 'IP_PRODUCCION',
         API_NODE: 'IP_PRODUCCION',
         URL_API_TRANSCRIPT: JSON.stringify('http://server247.cfgs.esliceu.net/bloggeri18n/blogger.php'),
         API_TRANSTALATE_URL: JSON.stringify('http://server247.cfgs.esliceu.net/bloggeri18n/blogger.php'),

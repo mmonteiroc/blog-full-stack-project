@@ -88,9 +88,10 @@
             timeout: 3000
           })
         }else if (response.status === 200){
-          /*
-          * TODO Redirect dashboard privado + añadir el token del usuario que acabas  de crear
-          * */
+
+          localStorage.setItem("refresh_token", response.data.refresh_token);
+          localStorage.setItem("access_token", response.data.access_token);
+          await this.$router.push('/private')
         }
 
       }

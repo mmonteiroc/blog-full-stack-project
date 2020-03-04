@@ -51,7 +51,13 @@ export default async ({Vue, router}) => {
       }else {
         /*
         * Step 3 - Si no nos renueva el token, mandar a login otra vez
+        *
+        * Tambien le quitamos los tokens actuales ya que no son validos, asi
+        * hasta que no se autentique otra vez no podra entrar a la parte privada
         * */
+
+        localStorage.removeItem('access_token');
+        localStorage.removeItem('refresh_token');
         router.push('/login');
       }
 
