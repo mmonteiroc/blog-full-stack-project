@@ -97,7 +97,6 @@
         });
       });
 
-      console.log('posts: ', this.totalPosts)
 
     }
   }

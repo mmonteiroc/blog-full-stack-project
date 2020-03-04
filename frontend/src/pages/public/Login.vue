@@ -66,7 +66,6 @@
     methods: {
       async validateLogin() {
         const response = await this.$axiosNode.post('/login/local', this.user);
-        console.log('RESPONSE', response);
 
         if (response.status!==200){
           this.$q.notify({

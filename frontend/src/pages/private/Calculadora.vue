@@ -181,7 +181,6 @@
       }.bind(this);
 
       this.dbPromise.onsuccess = function () {
-        console.log("DB READY TO USE");
         const alimentos = this.getAll();
 
         alimentos.onsuccess = function (ev) {
@@ -349,9 +348,7 @@
           * */
           foodTable.add(food);
         } catch (ConstraintError) {
-          /*
-          * console.error(ConstraintError)
-          * */
+
         }
       },
       updateFood(food) {
@@ -380,7 +377,6 @@
       async getFoodInfo(foodName) {
         const APP_ID = process.env.API_ID_COMIDA;
         const API_KEY = process.env.API_KEY_COMIDA;
-        console.log("API SEARCH OF: ", foodName);
 
 
         /*

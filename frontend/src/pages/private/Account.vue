@@ -114,7 +114,6 @@
     name: "Account",
     async created() {
       const data = await this.$axiosJava.get('/p/me');
-      console.log(data.data);
       this.usuario.nombre = data.data.nombre;
       this.usuario.apellidos = data.data.apellidos;
       this.usuario.username = data.data.username;
