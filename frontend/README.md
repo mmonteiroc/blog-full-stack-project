@@ -1,22 +1,28 @@
-# Quasar App (frontend)
+# Front-end
 
-A Quasar Framework app
+En este repositorio encontraras la parte de cliente de nuestro proyecto global.
+Para lanzar este proyecto necesitaras ejecutar los siguientes pasos:
 
-## Install the dependencies
+## Tener quasar instalado
+```bash
+npm install -g @quasar/cli
+```
+
+
+## Instalar todas las dependecias
 ```bash
 npm install
 ```
 
-### Start the app in development mode (hot-code reloading, error reporting, etc.)
+### Si quieres lanzar el proyecto en modo desarrollo:
 ```bash
 quasar dev
 ```
 
 
-### Build the app for production
+### Si quieres compilar en modo produccion:
 ```bash
 quasar build
 ```
+Para lanzar en modo produccion has de tener en cuenta en quasar.conf.js modificar las ips de produccion antes de compilarlo
 
-### Customize the configuration
-See [Configuring quasar.conf.js](https://quasar.dev/quasar-cli/quasar-conf-js).
