@@ -71,7 +71,7 @@ export default async ({Vue, router}) => {
     }
 
 
-    return Promise.reject(error);
+    return error.response;
   });
 
 
