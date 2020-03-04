@@ -1,14 +1,17 @@
-import {BAD_REQUEST, OK} from 'http-status-codes';
-import {Controller, Post} from '@overnightjs/core';
+import {BAD_REQUEST, OK, UNAUTHORIZED} from 'http-status-codes';
+import {Controller, Post, Put} from '@overnightjs/core';
 import {Request, Response} from 'express';
 import {UsuarioService} from "../service/usuarioService";
 import {TokenService} from "../service/TokenService";
+import * as jwt from "jsonwebtoken";
+import * as encriptador from 'bcrypt';
 
 require('../config/enviroment');
 
 @Controller('user')
 export class UsuarioController {
     private servicioDeTokens = new TokenService();
+    private usuarioService = new UsuarioService();
 
     @Post()
     private async create(req: Request, res: Response) {
@@ -38,6 +41,10 @@ export class UsuarioController {
             res.end();
         }
 
+        /*
+        * TODO definir politicas de password y validarla
+        * */
+
 
         /*
         * Comprobar que el email que recibimos
@@ -47,8 +54,7 @@ export class UsuarioController {
         * diciendo que el email no es valido
         * */
 
-        const usuarioService = new UsuarioService();
-        const usuario = <any>await usuarioService.findByEmail(user.email);
+        const usuario = <any>await this.usuarioService.findByEmail(user.email);
 
         if (usuario !== null) {
             res.status(BAD_REQUEST).statusMessage = 'Email ya en uso';
@@ -57,8 +63,8 @@ export class UsuarioController {
 
 
         // OK,guardamos el usuario
-        await usuarioService.createUser(user);
-        const userCreado = await usuarioService.findByEmail(user.email);
+        await this.usuarioService.createUser(user);
+        const userCreado = await this.usuarioService.findByEmail(user.email);
 
         const access_token = this.servicioDeTokens.tokenGenerator(userCreado.dataValues);
         const refresh_token = this.servicioDeTokens.tokenGenerator(userCreado.dataValues,'1w');
@@ -70,4 +76,57 @@ export class UsuarioController {
     }
 
 
+    @Put('security')
+    private async editSecurity(req:Request, res:Response){
+
+        /*
+        * Validamos que el token que nos pasas valide,
+        * despues cogemos el usuario de dicho token
+        * */
+        const token = <string>req.header("Authorization");
+        let usuarioDelToken;
+        try {
+            usuarioDelToken = <any>jwt.verify(token, process.env.JWT_SECRET || '');
+        } catch (e) {
+            res.status(UNAUTHORIZED).statusMessage = "Token no valido";
+            return res.end()
+            }
+
+        /*
+        * Aqui cogemos las 3 passwd
+        * */
+        const passwords = {
+            oldPassword: req.body.oldPassword,
+            newPassword: req.body.newPassword,
+            newPassword1: req.body.newPassword1,
+        };
+
+        // PLACEHOLDER -- AQUI COMPROBAR QUE LAS PASSWORDS CUMPLEN REQUISITOS Y SON IGUALES LAS DOS NEW
+        if (passwords.newPassword !== passwords.newPassword1){
+            res.status(BAD_REQUEST).statusMessage = 'La passwd nueva no coincide';
+            return res.end()
+        }
+
+
+        /*
+        * Cogemos el user de la DDBB
+        * */
+        let usuario = <any>await this.usuarioService.findByEmail(usuarioDelToken.email);
+
+        if (usuario === null) {
+            res.status(BAD_REQUEST).statusMessage = 'Usuario no existente';
+            return res.end()
+        }
+        usuario = usuario.dataValues;
+
+        const validacionPassword = await encriptador.compare(passwords.oldPassword, usuario.password);
+        if (!validacionPassword){
+            res.status(BAD_REQUEST).statusMessage = 'Old passwd no coincide con DDBB';
+            return res.end()
+        }
+        usuario.password = passwords.newPassword;
+        await this.usuarioService.update(usuario,true);
+
+        res.status(OK).end();
+    }
 }
