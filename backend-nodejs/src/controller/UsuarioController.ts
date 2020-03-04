@@ -2,12 +2,13 @@ import {BAD_REQUEST, OK} from 'http-status-codes';
 import {Controller, Post} from '@overnightjs/core';
 import {Request, Response} from 'express';
 import {UsuarioService} from "../service/usuarioService";
+import {TokenService} from "../service/TokenService";
 
 require('../config/enviroment');
 
 @Controller('user')
 export class UsuarioController {
-
+    private servicioDeTokens = new TokenService();
 
     @Post()
     private async create(req: Request, res: Response) {
@@ -57,7 +58,15 @@ export class UsuarioController {
 
         // OK,guardamos el usuario
         await usuarioService.createUser(user);
-        res.status(OK).end()
+        const userCreado = await usuarioService.findByEmail(user.email);
+
+        const access_token = this.servicioDeTokens.tokenGenerator(userCreado.dataValues);
+        const refresh_token = this.servicioDeTokens.tokenGenerator(userCreado.dataValues,'1w');
+
+        res.status(OK).json({
+                access_token: access_token,
+                refresh_token: refresh_token
+            }).end()
     }
 
 

@@ -5,46 +5,40 @@ import * as passport from "passport";
 import * as jwt from 'jsonwebtoken';
 import {Usuario} from "../model/Usuario";
 import {UsuarioService} from "../service/usuarioService";
+import {TokenService} from "../service/TokenService";
+
 
 require('../config/passport');
 require('../config/enviroment');
 
 @Controller('login')
 export class LoginController {
+    private servicioDeTokens = new TokenService();
 
 
-    /*
-    * Placeholder login local ---
-    * TODO hacer con passport
-    * */
     @Post('local')
-    private async loginLocal(req:Request, res:Response){
-
-        const service = new UsuarioService();
-        const userToValidate = {
-            email: req.body.email,
-            password: req.body.password,
-            authMode: 'local'
-        };
-
-        const result = await service.validateUser(userToValidate);
+    private async loginLocal(req: Request, res: Response) {
 
 
-        if (result){
-            // Validado
-            const usuarioValidado = await service.findByEmail(userToValidate.email);
-            const token = LoginController.tokenGenerator(usuarioValidado.dataValues);
-            const refresh_token = LoginController.tokenGenerator(usuarioValidado.dataValues, '1w');
-            return res.status(OK).json({
-                access_token: token,
-                refresh_token: refresh_token
-            })
+        passport.authenticate('local',
+            {
+                session: false
+            },
+            (req, usuario, info) => {
 
-        } else {
-            // No validado
-            res.status(UNAUTHORIZED).statusMessage = 'Datos de login no validos';
-            res.end()
-        }
+
+                if (!usuario){
+                    res.status(UNAUTHORIZED).statusMessage = 'Datos de login no validos';
+                    res.end()
+                }else {
+                    const token = this.servicioDeTokens.tokenGenerator(usuario.dataValues);
+                    const refresh_token = this.servicioDeTokens.tokenGenerator(usuario.dataValues, '1w');
+                    return res.status(OK).json({
+                        access_token: token,
+                        refresh_token: refresh_token
+                    })
+                }
+            })(req,res);
 
     }
 
@@ -80,7 +74,7 @@ export class LoginController {
         * Creamos un nuevo token con la info del refresh token
         * */
 
-        const newToken = LoginController.tokenGenerator({
+        const newToken = this.servicioDeTokens.tokenGenerator({
             email: usuario.email,
             username: usuario.username,
             idusuario: usuario.idusuario
@@ -122,22 +116,15 @@ export class LoginController {
             username: usuario.username,
             idusuario: usuario.idusuario
         };
-        /*
-        * TODO - ENVIAR REFRESH TOKEN TAMBIEN
-        * */
 
-        const token = LoginController.tokenGenerator(user);
-        res.redirect(process.env.FRONTEND_URL + '/?access_token=' + token + '#/login/callback');
+
+        const token = this.servicioDeTokens.tokenGenerator(user);
+        const refreshToken = this.servicioDeTokens.tokenGenerator(user, '1w');
+        res.redirect(process.env.FRONTEND_URL + '/?access_token=' + token + '&refresh_token='+ refreshToken +
+            '#/login/callback');
     }
 
 
-    /*
-    *
-    * TODO -- Mirar como enviar un error en este
-    *  caso al cliente diciendole que puede
-    *  que esta cuenta ya se user para login local o que google
-    *  no ha podido verificar su identidad
-    * */
     @Get('gg/failure')
     private async failure(req: Request, res: Response) {
         res.redirect(process.env.FRONTEND_URL + '/#/login/');

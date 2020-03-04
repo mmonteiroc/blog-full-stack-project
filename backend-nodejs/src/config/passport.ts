@@ -4,6 +4,7 @@
 import * as passport from "passport";
 import * as passportGoogle from 'passport-google-oauth2';
 import {UsuarioService} from "../service/usuarioService";
+import * as localPassport from "passport-local";
 
 require('./enviroment');
 
@@ -11,6 +12,7 @@ require('./enviroment');
 * Estrategias
 * */
 const GoogleStrategy = passportGoogle.Strategy;
+const LocalStrategy = localPassport.Strategy;
 
 passport.serializeUser(function (user, done) {
     done(null, user);
@@ -60,10 +62,40 @@ passport.use(new GoogleStrategy(
 
         const user = result.dataValues;
         if (user.authMode != 'google') {
-            done(null, false) // Enviar al cb de failure
+            return done(null, false) // Enviar al cb de failure
         } else {
-            done(null, user);
+            return done(null, user);
         }
 
     }
 ));
+
+passport.use(new LocalStrategy({
+    usernameField: 'email',
+    passwordField: 'password',
+    passReqToCallback: true
+}, async function (req, email, password, cb) {
+
+    /*
+    * Validar usuario
+    * */
+    const service = new UsuarioService();
+    const userToValidate = {
+        email: req.body.email,
+        password: req.body.password,
+        authMode: 'local'
+    };
+
+    const result = await service.validateUser(userToValidate);
+
+    let userValidated;
+    if (result) {
+        userValidated = await service.findByEmail(userToValidate.email);
+    } else {
+        userValidated = false
+    }
+
+
+    return cb(null, userValidated);
+}));
+
