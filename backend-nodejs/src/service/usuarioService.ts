@@ -31,6 +31,16 @@ export class UsuarioService {
         await this.repo.create(usuario)
     }
 
+    async update(usuario: any,encryptPass:boolean = false) {
+        if (encryptPass){
+            const password = usuario.password;
+            const saltRounds = 10;
+
+            usuario.password = await encriptador.hash(password, saltRounds);
+        }
+
+        await this.repo.update(usuario)
+    }
 
     /*
     * Este metodo valida que el login local sea el correcto

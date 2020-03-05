@@ -91,8 +91,8 @@ public class UsuarioController {
         * Ex: minimo de caracteres, etc
         * */
         if (usuario.getNombre().equals("")
-        || usuario.getApellidos().equals("")
-        || usuario.getUsername().equals("")){
+                || usuario.getApellidos().equals("")
+                || usuario.getUsername().equals("")) {
             return new ResponseEntity<>("No se cumplen los requisitos de los parametros", HttpStatus.BAD_REQUEST);
         }
 
@@ -100,6 +100,30 @@ public class UsuarioController {
 
         return new ResponseEntity<>(HttpStatus.OK);
     }
+
+    /*
+     * Endpoint el cual usaremos para elimimar nuestra cuenta (este endpoint no
+     * acepta parametros, ya que borrara la cuenta con la que estemos loggeados con nuestro token)
+     * */
+    @DeleteMapping("/p/user/")
+    @Transactional
+    public ResponseEntity<String> deleteAccount(HttpServletRequest request) {
+        String token = request.getHeader("Authorization");
+        token = token.replace("Bearer ", "");
+        Usuario usuario = tokenManager.getUsuariFromToken(token);
+
+        if (usuario == null) {
+            // Esto nunca deberia petar ya que si el handler te ha validado el token,
+            // significa que esta con nuestro sercret pero por si acaso ponemos este IF
+            // Por si acaso el usuario del token ha sido eliminado o algo
+            return new ResponseEntity<>("No existe tu usuario", HttpStatus.UNAUTHORIZED);
+        }
+
+        usuarioManager.delete(usuario);
+
+        return new ResponseEntity<>("Usuario eliminado correctamente", HttpStatus.OK);
+    }
+
 
     /*
      *

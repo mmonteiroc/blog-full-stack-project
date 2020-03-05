@@ -28,4 +28,11 @@ export class UsuarioRepository {
 
         const lucas = await this.repo.create(usuario);
     }
+    async update(usuario: any) {
+        return this.repo.update(usuario,{
+            where:{
+                email: usuario.email
+            }
+        });
+    }
 }
