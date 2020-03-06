@@ -7,7 +7,6 @@ import {Usuario} from "../model/Usuario";
 import {UsuarioService} from "../service/usuarioService";
 import {TokenService} from "../service/TokenService";
 
-
 require('../config/passport');
 require('../config/enviroment');
 
@@ -15,43 +14,52 @@ require('../config/enviroment');
 export class LoginController {
     private servicioDeTokens = new TokenService();
 
-
     @Post('local')
     private async loginLocal(req: Request, res: Response) {
 
-
+        /*
+        * Cedemos a passport el autenticar nuestro usuario
+        * */
         passport.authenticate('local',
             {
                 session: false
             },
+            /*
+            * Una vez autenticado, passport llamara a este
+            * callback el cual recibe el usuario loggeado / false si no se ha podido
+            * */
             (req, usuario, info) => {
 
-
-                if (!usuario){
+                if (!usuario) {
                     res.status(UNAUTHORIZED).statusMessage = 'Datos de login no validos';
-                    res.end()
-                }else {
-                    const token = this.servicioDeTokens.tokenGenerator(usuario.dataValues);
-                    const refresh_token = this.servicioDeTokens.tokenGenerator(usuario.dataValues, '1w');
-                    return res.status(OK).json({
-                        access_token: token,
-                        refresh_token: refresh_token
-                    })
+                    return res.end()
                 }
-            })(req,res);
 
+                /*
+                * Creamos los dos tokens que necesitara el usuario
+                *
+                * La passwd nucna va al token, por eso en el token generator la quitamos
+                * */
+                const token = this.servicioDeTokens.tokenGenerator(usuario.dataValues);
+                const refresh_token = this.servicioDeTokens.tokenGenerator(usuario.dataValues, '1w');
+                return res.status(OK).json({
+                    access_token: token,
+                    refresh_token: refresh_token
+                })
+
+            })(req, res);
     }
-
 
     @Post('refresh')
     private async refreshToken(req: Request, res: Response) {
+
         /*
         * Cogemos el refreshToken
         * */
         const token = <string>req.header("Authorization");
         if (!token && token === '') {
             res.status(BAD_REQUEST).statusMessage = "Refresh token no recibido";
-            res.end()
+            return res.end();
         }
 
         let usuarioDelToken;
@@ -59,14 +67,14 @@ export class LoginController {
             usuarioDelToken = <any>jwt.verify(token, process.env.JWT_SECRET || '');
         } catch (e) {
             res.status(UNAUTHORIZED).statusMessage = "Refresh token no valido";
-            res.end()
+            return res.end();
         }
 
         const service = new UsuarioService();
         let usuario = <any>await service.findByEmail(usuarioDelToken.email);
         if (!usuario) {
             res.status(UNAUTHORIZED).statusMessage = "Refresh token con datos de usuario no validos";
-            res.end()
+            return res.end()
         }
 
         usuario = usuario.dataValues;
@@ -85,7 +93,7 @@ export class LoginController {
 
         res.status(200).json({
             access_token: newToken
-        })
+        });
     }
 
     /*
@@ -99,7 +107,7 @@ export class LoginController {
     @Get('google')
     @Middleware(passport.authenticate('google', {scope: ['email', 'profile']}))
     private async loginGoogle(req: Request, res: Response) {
-        res.end()
+        return res.end();
     }
 
     /*
@@ -117,26 +125,13 @@ export class LoginController {
             idusuario: usuario.idusuario
         };
 
-
         const token = this.servicioDeTokens.tokenGenerator(user);
         const refreshToken = this.servicioDeTokens.tokenGenerator(user, '1w');
-        res.redirect(process.env.FRONTEND_URL + '/?access_token=' + token + '&refresh_token='+ refreshToken +
-            '#/login/callback');
+        res.redirect(process.env.FRONTEND_URL + '/?access_token=' + token + '&refresh_token=' + refreshToken + '#/login/callback');
     }
-
 
     @Get('gg/failure')
     private async failure(req: Request, res: Response) {
         res.redirect(process.env.FRONTEND_URL + '/#/login/');
-    }
-
-
-    private static tokenGenerator(user: any, expiresTime: any = '1m') {
-        user.password = '';
-        const stringUser: string = <string><unknown>user;
-        return jwt.sign(stringUser, process.env.JWT_SECRET || '', {
-            expiresIn: expiresTime,
-            subject: user.idusuario + ""// CAST TO STRING
-        });
     }
 }

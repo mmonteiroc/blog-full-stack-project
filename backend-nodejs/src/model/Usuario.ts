@@ -1,4 +1,4 @@
-import {Table, Column, Model, HasMany, PrimaryKey} from 'sequelize-typescript';
+import {Column, Model, Table} from 'sequelize-typescript';
 
 @Table({
     tableName: "usuario",
@@ -49,6 +49,4 @@ export class Usuario extends Model<Usuario> {
         type: 'string'
     })
     authMode: string | undefined;
-
-
 }

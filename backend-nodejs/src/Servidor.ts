@@ -1,10 +1,11 @@
 import * as bodyParser from 'body-parser';
-import { Server } from '@overnightjs/core';
-import { Logger } from '@overnightjs/logger';
+import {Server} from '@overnightjs/core';
+import {Logger} from '@overnightjs/logger';
 import {LoginController} from './controller/LoginController';
 import {UsuarioController} from "./controller/UsuarioController";
 import * as cors from 'cors';
 import * as passport from "passport";
+
 require('./config/enviroment');
 
 export class Servidor extends Server {
@@ -17,7 +18,6 @@ export class Servidor extends Server {
         * */
         this.app.use(bodyParser.json());
         this.app.use(bodyParser.urlencoded({extended: true}));
-
 
         /*
         * CORS config
@@ -34,14 +34,10 @@ export class Servidor extends Server {
         };
         this.app.use(cors(options));
 
-
         /*
         * Passport
         * */
         this.app.use(passport.initialize());
-
-
-
         this.setupControllers();
     }
 

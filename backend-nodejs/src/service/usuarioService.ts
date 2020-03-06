@@ -4,7 +4,6 @@ import * as encriptador from 'bcrypt';
 export class UsuarioService {
     private repo: UsuarioRepository;
 
-
     constructor() {
         this.repo = new UsuarioRepository();
     }
@@ -12,7 +11,6 @@ export class UsuarioService {
     async findAllUsers() {
         return this.repo.findAll();
     }
-
 
     async findByEmail(email: string) {
         return await this.repo.findByEmail(email);
@@ -23,12 +21,11 @@ export class UsuarioService {
         * Antes de añadirlo, la password la cifraremos
         *
         * */
-
         const password = usuario.password;
         const saltRounds = 10;
 
         usuario.password = await encriptador.hash(password, saltRounds);
-        await this.repo.create(usuario)
+        await this.repo.create(usuario);
     }
 
     async update(usuario: any,encryptPass:boolean = false) {
@@ -57,11 +54,7 @@ export class UsuarioService {
         if (user === null || !user) return false;
         user = user.dataValues;
 
-
         const validacionPassword = await encriptador.compare(usuarioToCheck.password, user.password);
-
-
         return validacionPassword && user.authMode === usuarioToCheck.authMode;
     }
-
 }

@@ -34,7 +34,6 @@ passport.use(new GoogleStrategy(
     },
     async function (request: any, accessToken: string, refreshToken: string, profile: any, done: any) {
 
-
         const email = profile.email;
         let result;
         const usuarioService = new UsuarioService();
@@ -59,10 +58,9 @@ passport.use(new GoogleStrategy(
             result = <any>await usuarioService.findByEmail(email);
         }
 
-
         const user = result.dataValues;
         if (user.authMode != 'google') {
-            return done(null, false) // Enviar al cb de failure
+            return done(null, false); // Enviar al cb de failure
         } else {
             return done(null, user);
         }
@@ -92,10 +90,8 @@ passport.use(new LocalStrategy({
     if (result) {
         userValidated = await service.findByEmail(userToValidate.email);
     } else {
-        userValidated = false
+        userValidated = false;
     }
-
 
     return cb(null, userValidated);
 }));
-
