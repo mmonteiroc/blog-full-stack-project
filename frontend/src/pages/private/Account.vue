@@ -38,27 +38,27 @@
 
         <q-card-section class="">
           <div class="row items-center">
-            <span class="text-grey-6 col-2 q-pa-sm text-right">Username</span>
-            <span class="col-4 q-pa-sm">
+            <span class="text-grey-6 col-4 col-md-2 col-sm-3 col-lg-2 q-pa-sm text-right">Username</span>
+            <span class="col-6 col-md-4 col-sm-5 col-lg-4 q-pa-sm">
               <q-input outlined dense v-model="usuario.username" color="secondary"/>
 
             </span>
           </div>
           <div class="row items-center">
-            <span class="text-grey-6 col-2 q-pa-sm text-right">Nombre</span>
-            <span class="col-4 q-pa-sm justify-center content-center">
+            <span class="text-grey-6 col-4 col-md-2 col-sm-3 col-lg-2 q-pa-sm text-right">Nombre</span>
+            <span class="col-6 col-md-4 col-sm-5 col-lg-4 q-pa-sm justify-center content-center">
               <q-input outlined dense v-model="usuario.nombre" color="secondary"/>
             </span>
           </div>
           <div class="row items-center">
-            <span class="text-grey-6 col-2 q-pa-sm text-right">Apellidos</span>
-            <span class="col-4 q-pa-sm">
+            <span class="text-grey-6 col-4 col-md-2 col-sm-3 col-lg-2 q-pa-sm text-right">Apellidos</span>
+            <span class="col-6 col-md-4 col-sm-5 col-lg-4 q-pa-sm">
               <q-input outlined dense v-model="usuario.apellidos" color="secondary"/>
             </span>
           </div>
           <div class="row items-center">
-            <span class="text-grey-6 col-2 q-pa-sm text-right">Email</span>
-            <span class="col-4 q-pa-sm">{{usuario.email}}
+            <span class="text-grey-6 col-4 col-md-2 col-sm-3 col-lg-2 q-pa-sm text-right">Email</span>
+            <span class="col-6 col-md-4 col-sm-5 col-lg-4 q-pa-sm">{{usuario.email}}
               <q-tooltip content-class="bg-red-8" anchor="center right" self="center left" transition-show="flip-right"
                          transition-hide="flip-left">
                Email no se puede modificar
@@ -86,22 +86,22 @@
 
         <q-card-section class="">
           <div class="row items-center">
-            <span class="text-grey-6 col-2 q-pa-sm text-right">Old password</span>
-            <span class="col-4 q-pa-sm">
+            <span class="text-grey-6 col-4 col-md-2 col-sm-3 col-lg-2 q-pa-sm text-right">Old password</span>
+            <span class="col-6 col-md-4 col-sm-5 col-lg-4 q-pa-sm">
               <q-input outlined dense v-model="usuario.oldPassword" color="secondary"
                        :rules="[val => !!val || 'Field is required']"/>
             </span>
           </div>
           <div class="row items-center">
-            <span class="text-grey-6 col-2 q-pa-sm text-right">New password</span>
-            <span class="col-4 q-pa-sm">
+            <span class="text-grey-6 col-4 col-md-2 col-sm-3 col-lg-2 q-pa-sm text-right">New password</span>
+            <span class="col-6 col-md-4 col-sm-5 col-lg-4 q-pa-sm">
               <q-input outlined dense v-model="usuario.newPassword" color="secondary"
               />
             </span>
           </div>
           <div class="row items-center">
-            <span class="text-grey-6 col-2 q-pa-sm text-right">New password</span>
-            <span class="col-4 q-pa-sm">
+            <span class="text-grey-6 col-4 col-md-2 col-sm-3 col-lg-2 q-pa-sm text-right">New password</span>
+            <span class="col-6 col-md-4 col-sm-5 col-lg-4 q-pa-sm">
               <q-input outlined dense v-model="usuario.newPassword1" color="secondary"
                        :rules="[val => usuario.newPassword1 === usuario.newPassword || 'Passwd not match']"/>
             </span>
@@ -129,7 +129,10 @@
 
         <q-card-section class="">
           <q-input outlined dense v-model="emailToDelete"
-                   :rules="[val => usuario.email === val || 'Email no coincide']" label="Email"/>
+                   :rules="[
+                     val => $v.emailValidacion.required || 'Campo requerido'
+                     ]" label="Email"/>
+
           <div class="q-pt-md">
             ¿Estas seguro de borrar tu cuenta?
             Esta accion <span class="text-negative text-weight-bolder">no se puede deshacer</span>.
@@ -141,7 +144,11 @@
 
         <q-card-actions align="right">
           <q-btn v-close-popup color="primary" label="Cancel"/>
-          <q-btn v-close-popup flat color="negative" label="Borrar cuenta" @click="deleteAccount"/>
+
+          <q-btn v-close-popup flat disable color="negative" label="Borrar cuenta"
+                 v-if="usuario.email !== emailToDelete"/>
+          <q-btn v-close-popup color="negative" label="Borrar cuenta" v-if="usuario.email === emailToDelete"
+                 @click="deleteAccount"/>
         </q-card-actions>
       </q-card>
     </q-dialog>
@@ -158,6 +165,8 @@
 </template>
 
 <script>
+  import {required} from 'vuelidate/lib/validators';
+
   export default {
     name: "Account",
     async created() {
@@ -240,19 +249,31 @@
         /*
         * Fetch api borrar account
         * */
-
+        const response = await this.$axiosJava.delete('/p/user/');
+        console.log(response);
         // Placeholder
-        if (false) {
+        if (response.status === 200) {
           // OK SE HA BORRADO
           // QUITAMOS TODOS LOS TOKENS
+          localStorage.removeItem('access_token');
+          localStorage.removeItem('refresh_token');
           // REENVIAMOS A LOGIN
+          await this.$router.push('/login')
         } else {
-          // HA HABIDO UN ERROR intenta mas tarde
-          // MOSTRAMOS NOTIFICACION
+          this.$q.notify({
+            color: 'negative',
+            textColor: 'black',
+            message: response.data,
+            position: 'bottom',
+            timeout: 3000
+          })
         }
       }
-
-
+    },
+    validations: {
+      emailValidacion: {
+        required
+      }
     }
   }
 </script>
