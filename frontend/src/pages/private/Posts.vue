@@ -1,6 +1,20 @@
 <template>
   <q-page class=" gradient-background row flex-center">
-    <ul class="row col-12 col-md-6 flex-center">
+    <div v-if="postsFiltered.length === 0" class="fixed-center text-center">
+      <p>
+        <img
+          src="~assets/sad.svg"
+          style="width:30vw;max-width:150px;"
+        >
+      </p>
+
+
+      <p class="text-faded" v-if="allPosts.length===0">Sorry, no tienes ningun post</p>
+      <p class="text-faded" v-if="allPosts.length!==0">Sorry, ningun post coincide con tu filtro</p>
+
+    </div>
+
+    <ul class="row col-12 col-md-6 flex-center" v-if="postsFiltered.length !== 0">
       <li v-for="item in postsFiltered" class="col-12 col-md-6 col-sm-8 q-pa-sm">
         <q-card flat bordered class="my-card bg-grey-1 ">
           <q-card-section>

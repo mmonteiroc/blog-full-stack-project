@@ -1,8 +1,8 @@
 <template>
   <q-page class="flex flex-center">
-    <div class="flex-center flex main">
+    <div class="row q-pa-md">
 
-      <q-card class="food-section q-mr-lg">
+      <q-card class="col-lg-4 col-md-5 col-sm-12 col-12">
         <q-card-section>
           <div class="text-h6">Dieta actual</div>
         </q-card-section>
@@ -11,7 +11,6 @@
         <q-scroll-area style="height: 400px">
 
           <q-list bordered separator>
-
 
             <q-item v-for="item in allFoodItems">
               <q-item-section>
@@ -27,15 +26,14 @@
           </q-list>
         </q-scroll-area>
 
-
         <q-separator/>
         <q-card-actions align="right">
           <q-btn flat @click="removeAllItems"> Borrar todos los alimentos</q-btn>
         </q-card-actions>
 
-
       </q-card>
-      <div class="column flex-center form-section">
+      <div class="col-lg-2 col-md-1 col-sm-0"></div>
+      <div class="column flex-center form-section col-lg-6 col-md-6 col-sm-12 col-12">
         <h3>Calcula las tus calorias</h3>
 
         <div>
@@ -420,27 +418,10 @@
 
 <style scoped>
 
-  .column {
-    width: 50%;
-  }
 
   .inputDragDrop {
     width: 50%;
     min-height: 10vh;
-  }
-
-  .food-section {
-    min-width: 30%;
-    max-width: 30%;
-  }
-
-  .form-section {
-    max-width: 60%;
-  }
-
-  .main {
-    margin: 0;
-    max-width: 80%;
   }
 
 </style>

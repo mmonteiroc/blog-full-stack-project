@@ -48,13 +48,13 @@
           </div>
           <q-separator class="q-mt-sm q-mb-sm"/>
           <div class="row flex-center justify-evenly q-mb-sm">
-            <q-btn flat icon="person" color="primary" to="/private/account">
+            <q-btn outline icon="person" color="primary" to="/private/account">
               <q-tooltip content-class="bg-indigo" :delay="300" :offset="[10, 10]">
                 Account
               </q-tooltip>
             </q-btn>
 
-            <q-btn icon="lock" flat  color="accent"  @click="confirmDisconnect = true">
+            <q-btn icon="lock" color="accent" @click="confirmDisconnect = true" outline>
               <q-tooltip content-class="bg-red" :delay="300" :offset="[10, 10]">
                 Log Out
               </q-tooltip>

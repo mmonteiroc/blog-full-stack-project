@@ -3,7 +3,7 @@
     class="window-height window-width row justify-center items-center bg-grey-3"
   >
 
-            <q-card  class="shadow-4 col-11 col-sm-3" >
+            <q-card class="shadow-4 col-11 col-sm-8 col-md-5 col-lg-3">
 
               <q-card-section class="bg-deep-purple-7">
 
