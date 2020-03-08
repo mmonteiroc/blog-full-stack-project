@@ -17,9 +17,7 @@
           </q-card-section>
 
 
-          <q-card-section class="overflow-auto">
-            {{item.contenido}}
-          </q-card-section>
+          <q-card-section class="overflow-auto" v-html="item.contenido"/>
 
 
         </q-card>
